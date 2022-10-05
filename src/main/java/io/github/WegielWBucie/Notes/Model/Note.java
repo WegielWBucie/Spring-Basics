@@ -1,8 +1,6 @@
 package io.github.WegielWBucie.Notes.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -10,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 class Note {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -17,10 +16,9 @@ class Note {
     @NotBlank(message = "Note content must not be empty or blank.")
     private String content;
 
-    @NotBlank(message = "Note content must not be null.")
     private Long priority;
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -28,7 +26,7 @@ class Note {
         this.id = id;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -36,7 +34,7 @@ class Note {
         this.title = title;
     }
 
-    String getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -44,7 +42,7 @@ class Note {
         this.content = content;
     }
 
-    Long getPriority() {
+    public Long getPriority() {
         return priority;
     }
 
