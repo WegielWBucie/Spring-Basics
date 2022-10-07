@@ -1,5 +1,9 @@
 package io.github.WegielWBucie.Notes.Model;
 
-interface NoteSQLRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+interface NoteSQLRepository extends NoteRepository {
+
 
 }
