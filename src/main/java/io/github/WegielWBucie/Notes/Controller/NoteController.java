@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RepositoryRestController
 class NoteController {
@@ -21,9 +23,24 @@ class NoteController {
     }
 
     @GetMapping(path = "/notes")
-    ResponseEntity<?> readAllTasks() {
+    ResponseEntity<?> findALlNotes() {
         logger.warn("Exposing all tasks.");
         return ResponseEntity.ok(noteRepository.findAll());
     }
+
+    @GetMapping(path = "/notes/{ID}")
+    ResponseEntity<?> findNoteByID(@PathVariable final Long ID) {
+        logger.warn("Exposing note: {ID}." + ID);
+        return ResponseEntity.ok(noteRepository.findById(ID));
+    }
+
+
+
+//    @PutMapping(path = "/notes")
+//    ResponseEntity<?> addNote() {
+//        logger.info("New note has been added.");
+//    }
+
+
 
 }
