@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.*;
 import java.net.URI;
 
 @RepositoryRestController
@@ -34,10 +33,13 @@ class NoteController {
 
     @GetMapping(path = "/notes/{ID}")
     ResponseEntity<?> findNoteByID(@PathVariable @Valid final Long ID) {
+        if(!noteRepository.existsById(ID)) {
+            logger.error("No note with ID " + ID + " exists!");
+            return ResponseEntity.notFound().build();
+        }
+
         logger.warn("Exposing note: " + ID);
-        return noteRepository.findById(ID)
-                .map(note -> ResponseEntity.ok(note))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(noteRepository.findById(ID));
     }
 
     @PutMapping(path = "/notes/{ID}")
@@ -67,6 +69,10 @@ class NoteController {
         catch(EmptyResultDataAccessException emptyResultDataAccessException) {
             logger.error("No note with ID " + ID + " exists!");
             return ResponseEntity.notFound().build();
+        }
+        catch(Exception exception) {
+            logger.error(exception.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 }
