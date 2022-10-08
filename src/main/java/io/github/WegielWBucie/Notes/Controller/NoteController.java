@@ -1,14 +1,17 @@
 package io.github.WegielWBucie.Notes.Controller;
 
+import io.github.WegielWBucie.Notes.Model.Note;
 import io.github.WegielWBucie.Notes.Model.NoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.awt.*;
+import java.net.URI;
 
 @RepositoryRestController
 class NoteController {
@@ -29,18 +32,30 @@ class NoteController {
     }
 
     @GetMapping(path = "/notes/{ID}")
-    ResponseEntity<?> findNoteByID(@PathVariable final Long ID) {
-        logger.warn("Exposing note: {ID}." + ID);
-        return ResponseEntity.ok(noteRepository.findById(ID));
+    ResponseEntity<?> findNoteByID(@PathVariable @Valid final Long ID) {
+        logger.warn("Exposing note: " + ID);
+        return noteRepository.findById(ID)
+                .map(note -> ResponseEntity.ok(note))
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping(path = "/notes/{ID}")
+    ResponseEntity<?> editNote(@PathVariable @Valid final Long ID) {
 
+        return null;
+    }
 
-//    @PutMapping(path = "/notes")
-//    ResponseEntity<?> addNote() {
-//        logger.info("New note has been added.");
-//    }
+    @PostMapping(path = "/notes")
+    ResponseEntity<?> postNote(@RequestBody @Valid Note toPost) {
 
+        Note result = noteRepository.save(toPost);
+        URI location = URI.create("/notes/" + result.getId());
+        return ResponseEntity.created(location).body(result);
+    }
 
+    @DeleteMapping(path = "/notes/{ID}")
+    ResponseEntity<?> deleteNote(@PathVariable Long ID) {
 
+        return null;
+    }
 }
