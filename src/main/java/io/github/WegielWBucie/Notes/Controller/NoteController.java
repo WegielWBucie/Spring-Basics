@@ -6,14 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
-@RepositoryRestController
+@RestController
 class NoteController {
 
     private final NoteRepository noteRepository;
@@ -25,10 +26,16 @@ class NoteController {
         this.noteRepository = noteRepository;
     }
 
-    @GetMapping(path = "/notes")
-    ResponseEntity<?> findALlNotes() {
+    @GetMapping(path = "/notes/", params = {"!sort", "!page", "!size"})
+    ResponseEntity<?> findAllNotes() {
         logger.warn("Exposing all tasks.");
         return ResponseEntity.ok(noteRepository.findAll());
+    }
+
+    @GetMapping(path = "/notes")
+    ResponseEntity<List<Note>> findALlNotes(Pageable page) {
+
+        return ResponseEntity.ok(noteRepository.findAll(page).getContent());
     }
 
     @GetMapping(path = "/notes/{ID}")
@@ -47,6 +54,7 @@ class NoteController {
         if(!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
         }
+
         logger.warn("Edited note " + ID + ".");
         newNote.setId(ID);
         return ResponseEntity.ok(noteRepository.save(newNote));
@@ -68,7 +76,7 @@ class NoteController {
             return ResponseEntity.noContent().build();
         }
         catch(EmptyResultDataAccessException emptyResultDataAccessException) {
-            logger.error("No note with selected ID exists. ( ID = " + ID + " )");
+            logger.error("No note with selected ID exists. (ID = " + ID + ")");
             return ResponseEntity.notFound().build();
         }
         catch(Exception exception) {
