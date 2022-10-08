@@ -22,7 +22,7 @@ public class Note {
         return id;
     }
 
-    void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 

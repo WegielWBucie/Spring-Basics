@@ -34,7 +34,7 @@ class NoteController {
     @GetMapping(path = "/notes/{ID}")
     ResponseEntity<?> findNoteByID(@PathVariable @Valid final Long ID) {
         if(!noteRepository.existsById(ID)) {
-            logger.error("No note with ID " + ID + " exists!");
+            logger.error("No note with selected ID exists. ( ID = " + ID + " )");
             return ResponseEntity.notFound().build();
         }
 
@@ -43,15 +43,17 @@ class NoteController {
     }
 
     @PutMapping(path = "/notes/{ID}")
-    ResponseEntity<?> editNote(@PathVariable @Valid final Long ID) {
-
-        logger.warn("Edit mode:");
-        return null;
+    ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody @Valid final Note newNote) {
+        if(!noteRepository.existsById(ID)) {
+            logger.error("No note with selected ID exists. ( ID = " + ID + " )");
+        }
+        logger.warn("Edited note " + ID + ".");
+        newNote.setId(ID);
+        return ResponseEntity.ok(noteRepository.save(newNote));
     }
 
     @PostMapping(path = "/notes")
     ResponseEntity<?> postNote(@RequestBody @Valid Note toPost) {
-
         Note result = noteRepository.save(toPost);
         URI location = URI.create("/notes/" + result.getId());
         return ResponseEntity.created(location).body(result);
@@ -59,7 +61,6 @@ class NoteController {
 
     @DeleteMapping(path = "/notes/{ID}")
     ResponseEntity<?> deleteNote(@PathVariable @Valid Long ID) {
-
         try {
             noteRepository.deleteById(ID);
             logger.warn("Removing task: " + ID);
@@ -67,7 +68,7 @@ class NoteController {
             return ResponseEntity.noContent().build();
         }
         catch(EmptyResultDataAccessException emptyResultDataAccessException) {
-            logger.error("No note with ID " + ID + " exists!");
+            logger.error("No note with selected ID exists. ( ID = " + ID + " )");
             return ResponseEntity.notFound().build();
         }
         catch(Exception exception) {
