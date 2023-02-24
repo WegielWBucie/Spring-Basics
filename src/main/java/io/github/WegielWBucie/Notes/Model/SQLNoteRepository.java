@@ -13,5 +13,4 @@ interface SQLNoteRepository extends NoteRepository, JpaRepository<Note, Long> {
     List<Note> findByPriorityOrderByPriority(@Param("priority") final Long priority);
 
 
-
 }
