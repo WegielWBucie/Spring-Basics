@@ -1,7 +1,7 @@
 package io.github.WegielWBucie.Notes.Model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notes")
@@ -13,10 +13,11 @@ public class Note {
 
     private String title;
 
-    @NotBlank(message = "Note content must not be empty or blank.")
     private String content;
 
     private Long priority;
+
+    private LocalDateTime expiration;
 
     public Long getId() {
         return id;
@@ -30,7 +31,7 @@ public class Note {
         return title;
     }
 
-    void setTitle(final String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -38,7 +39,7 @@ public class Note {
         return content;
     }
 
-    void setContent(final String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
 
@@ -46,7 +47,15 @@ public class Note {
         return priority;
     }
 
-    void setPriority(final Long priority) {
+    public void setPriority(final Long priority) {
         this.priority = priority;
+    }
+
+    public LocalDateTime getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(final LocalDateTime expiration) {
+        this.expiration = expiration;
     }
 }
