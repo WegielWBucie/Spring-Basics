@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 class NoteController {
@@ -51,22 +50,20 @@ class NoteController {
         return ResponseEntity.ok(noteRepository.findById(ID));
     }
 
-    @Transactional
     @PutMapping(path = "/notes/{ID}")
-    ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note noteEdits) {
-        Optional<Note> noteOptional = noteRepository.findById(ID);
-        if (noteOptional.isEmpty()) {
+    ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note toUpdate) {
+        if (!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
             return ResponseEntity.notFound().build();
         }
-        Note note = noteOptional.get();
-        note.setPriority(noteEdits.getPriority() != null ? noteEdits.getPriority() : note.getPriority());
-        note.setTitle(noteEdits.getTitle() != null ? noteEdits.getTitle() : note.getTitle());
-        note.setContent(noteEdits.getContent() != null ? noteEdits.getContent() : note.getContent());
-        note.setExpiration(noteEdits.getExpiration() != null ? noteEdits.getExpiration() : note.getExpiration());
 
-        logger.warn("Edited note " + ID + ".");
-        return ResponseEntity.ok(noteRepository.save(note));
+        noteRepository.findById(ID)
+                .ifPresent(note -> {
+                    note.updateFrom(toUpdate);
+                    noteRepository.save(note); /* equivalent to @Transactional */
+                });
+
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(path = "/notes")

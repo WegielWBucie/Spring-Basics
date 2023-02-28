@@ -4,26 +4,28 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notes")
+@Table(name = "NOTES")
 public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
     private String content;
-
-    private Long priority;
-
+    private int priority;
     private LocalDateTime expiration;
+
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
+
+    @Transient
+    private LocalDateTime test;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    void setId(final Long id) {
         this.id = id;
     }
 
@@ -43,11 +45,11 @@ public class Note {
         this.content = content;
     }
 
-    public Long getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(final Long priority) {
+    public void setPriority(final int priority) {
         this.priority = priority;
     }
 
@@ -57,5 +59,26 @@ public class Note {
 
     public void setExpiration(final LocalDateTime expiration) {
         this.expiration = expiration;
+    }
+
+    public void updateFrom(final Note source) {
+        if(source.getTitle() != null)
+            this.title = source.getTitle();
+        if(source.getContent() != null)
+            this.content = source.getContent();
+        if(source.getPriority() != 0)
+            this.priority = source.getPriority();
+        if(source.getExpiration() != null)
+            this.expiration = source.getExpiration();
+    }
+
+    @PrePersist
+    void prePersist() {
+        this.createdOn = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        this.updatedOn = LocalDateTime.now();
     }
 }
