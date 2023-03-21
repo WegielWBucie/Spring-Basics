@@ -52,7 +52,7 @@ class NoteController {
 
     @PutMapping(path = "/notes/{ID}")
     ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note toUpdate) {
-        if (!noteRepository.existsById(ID)) {
+        if(!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
             return ResponseEntity.notFound().build();
         }

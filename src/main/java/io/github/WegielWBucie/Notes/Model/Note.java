@@ -15,11 +15,13 @@ public class Note {
     private int priority;
     private LocalDateTime expiration;
 
-    private LocalDateTime createdOn;
-    private LocalDateTime updatedOn;
+    @Embedded
+//    @AttributeOverrides({
+//                    @AttributeOverride(column = @Column(name = "updatedOn"), name = "updatedOn")
+//            }
+//    )
+    private Audit audit = new Audit();
 
-    @Transient
-    private LocalDateTime test;
 
     public Long getId() {
         return id;
@@ -70,15 +72,5 @@ public class Note {
             this.priority = source.getPriority();
         if(source.getExpiration() != null)
             this.expiration = source.getExpiration();
-    }
-
-    @PrePersist
-    void prePersist() {
-        this.createdOn = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    void preUpdate() {
-        this.updatedOn = LocalDateTime.now();
     }
 }
