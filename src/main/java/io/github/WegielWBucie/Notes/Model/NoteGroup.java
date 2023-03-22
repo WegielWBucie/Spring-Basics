@@ -27,7 +27,6 @@ public class NoteGroup {
     )
     private Set<Note> notes;
 
-
     public Long getId() {
         return id;
     }
@@ -60,7 +59,7 @@ public class NoteGroup {
         this.priority = priority;
     }
 
-    Set<Note> getNotes() {
+    public Set<Note> getNotes() {
         return notes;
     }
 

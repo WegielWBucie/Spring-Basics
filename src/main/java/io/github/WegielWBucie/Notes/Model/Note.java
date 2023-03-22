@@ -26,14 +26,6 @@ public class Note {
     @JoinColumn(name = "NOTE_GROUP_ID")
     private NoteGroup group;
 
-    NoteGroup getGroup() {
-        return group;
-    }
-
-    void setGroup(NoteGroup noteGroup) {
-        this.group = noteGroup;
-    }
-
     public Long getId() {
         return id;
     }
@@ -74,16 +66,24 @@ public class Note {
         this.expiration = expiration;
     }
 
+    NoteGroup getGroup() {
+        return group;
+    }
+
+    void setGroup(NoteGroup noteGroup) {
+        this.group = noteGroup;
+    }
+
     public void updateFrom(final Note source) {
         if(source.getTitle() != null)
-            this.title = source.getTitle();
+            this.setTitle(source.getTitle());
         if(source.getContent() != null)
-            this.content = source.getContent();
+            this.setContent(source.getContent());
         if(source.getPriority() != 0)
-            this.priority = source.getPriority();
+            this.setPriority(source.getPriority());
         if(source.getExpiration() != null)
-            this.expiration = source.getExpiration();
+            this.setExpiration(source.getExpiration());
         if(source.getGroup() != null)
-            this.group = source.getGroup();
+            this.setGroup(source.getGroup());
     }
 }
