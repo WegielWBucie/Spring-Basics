@@ -11,7 +11,7 @@ import java.util.List;
 @RepositoryRestResource(path = "notes")
 interface SQLNoteRepository extends NoteRepository, JpaRepository<Note, Long> {
 
-    List<Note> findByPriorityOrderByPriority(@Param("priority") final Long priority);
+    List<Note> findByPriorityOrderByPriority(@Param("priority") final int priority);
 
     @Override
     @Query(nativeQuery = true, value = "SELECT COUNT (*) > 0 FROM NOTES WHERE ID=:ID")
