@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "NOTES")
-public class Note {
+@Table(name = "NOTES_GROUPS")
+public class NoteGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +13,6 @@ public class Note {
     private String title;
     private String content;
     private int priority;
-    private LocalDateTime expiration;
 
     @Embedded
 //    @AttributeOverrides({
@@ -21,18 +20,6 @@ public class Note {
 //            }
 //    )
     private Audit audit = new Audit();
-
-    @ManyToOne()
-    @JoinColumn(name = "note_group_id")
-    private NoteGroup noteGroup;
-
-    public NoteGroup getNoteGroup() {
-        return noteGroup;
-    }
-
-    public void setNoteGroup(NoteGroup noteGroup) {
-        this.noteGroup = noteGroup;
-    }
 
 
     public Long getId() {
@@ -67,22 +54,4 @@ public class Note {
         this.priority = priority;
     }
 
-    public LocalDateTime getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(final LocalDateTime expiration) {
-        this.expiration = expiration;
-    }
-
-    public void updateFrom(final Note source) {
-        if(source.getTitle() != null)
-            this.title = source.getTitle();
-        if(source.getContent() != null)
-            this.content = source.getContent();
-        if(source.getPriority() != 0)
-            this.priority = source.getPriority();
-        if(source.getExpiration() != null)
-            this.expiration = source.getExpiration();
-    }
 }
