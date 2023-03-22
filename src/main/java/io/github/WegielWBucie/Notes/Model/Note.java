@@ -22,18 +22,17 @@ public class Note {
 //    )
     private Audit audit = new Audit();
 
-    @ManyToOne()
-    @JoinColumn(name = "note_group_id")
-    private NoteGroup noteGroup;
+    @ManyToOne
+    @JoinColumn(name = "NOTE_GROUP_ID")
+    private NoteGroup group;
 
-    public NoteGroup getNoteGroup() {
-        return noteGroup;
+    NoteGroup getGroup() {
+        return group;
     }
 
-    public void setNoteGroup(NoteGroup noteGroup) {
-        this.noteGroup = noteGroup;
+    void setGroup(NoteGroup noteGroup) {
+        this.group = noteGroup;
     }
-
 
     public Long getId() {
         return id;
@@ -84,5 +83,7 @@ public class Note {
             this.priority = source.getPriority();
         if(source.getExpiration() != null)
             this.expiration = source.getExpiration();
+        if(source.getGroup() != null)
+            this.group = source.getGroup();
     }
 }

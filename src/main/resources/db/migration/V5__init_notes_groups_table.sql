@@ -4,6 +4,6 @@ create table NOTE_GROUPS(
     content varchar(100) not null,
     priority int
 );
-alter table NOTES add column note_group_id int null;
+alter table NOTES add column note_group_id long null;
 alter table NOTES
     add foreign key (note_group_id) references NOTE_GROUPS (id);

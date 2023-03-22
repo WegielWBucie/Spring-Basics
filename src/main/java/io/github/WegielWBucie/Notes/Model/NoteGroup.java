@@ -1,10 +1,10 @@
 package io.github.WegielWBucie.Notes.Model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "NOTES_GROUPS")
+@Table(name = "NOTE_GROUPS")
 public class NoteGroup {
 
     @Id
@@ -14,12 +14,18 @@ public class NoteGroup {
     private String content;
     private int priority;
 
-    @Embedded
+//    @Embedded
 //    @AttributeOverrides({
 //                    @AttributeOverride(column = @Column(name = "updatedOn"), name = "updatedOn")
 //            }
 //    )
-    private Audit audit = new Audit();
+//    private Audit audit = new Audit();
+
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "group"
+    )
+    private Set<Note> notes;
 
 
     public Long getId() {
@@ -54,4 +60,11 @@ public class NoteGroup {
         this.priority = priority;
     }
 
+    Set<Note> getNotes() {
+        return notes;
+    }
+
+    void setNotes(final Set<Note> notes) {
+        this.notes = notes;
+    }
 }
