@@ -1,14 +1,16 @@
-package io.github.WegielWBucie.Notes.Model;
+package io.github.WegielWBucie.Notes.Adapter;
 
+import io.github.WegielWBucie.Notes.Model.Note;
+import io.github.WegielWBucie.Notes.Model.NoteRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
-@RepositoryRestResource(path = "notes")
+@Repository
 interface SQLNoteRepository extends NoteRepository, JpaRepository<Note, Long> {
 
     List<Note> findByPriorityOrderByPriority(@Param("priority") final int priority);

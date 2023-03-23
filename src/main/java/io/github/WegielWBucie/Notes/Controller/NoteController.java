@@ -69,7 +69,7 @@ class NoteController {
     @PostMapping(path = "/notes")
     ResponseEntity<?> postNote(@RequestBody @Valid Note toPost) {
         Note result = noteRepository.save(toPost);
-        URI location = URI.create("/notes/" + result.getId());
+        URI location = URI.create("/notes/" + result.getID());
         return ResponseEntity.created(location).body(result);
     }
 
@@ -84,7 +84,7 @@ class NoteController {
         noteRepository.findById(ID)
                         .ifPresent(note -> note.setPriority(note.getPriority() + 1));
 
-        logger.warn("Edited note " + ID + ".");
+        logger.warn("Patched note " + ID + ".");
         return ResponseEntity.noContent().build();
     }
 

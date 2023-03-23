@@ -6,17 +6,17 @@ import javax.persistence.*;
 abstract class BaseNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    protected Long ID;
     protected String title;
     protected String content;
     protected int priority;
 
-    public Long getId() {
-        return id;
+    public Long getID() {
+        return ID;
     }
 
-    void setId(final Long id) {
-        this.id = id;
+    void setID(final Long id) {
+        this.ID = id;
     }
 
     public String getTitle() {
