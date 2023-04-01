@@ -8,4 +8,6 @@ public interface NoteGroupRepository {
     Optional<NoteGroup> findByID(Long ID);
 
     NoteGroup save(NoteGroup entity);
+
+    boolean existsByProjectID(Long projectID);
 }

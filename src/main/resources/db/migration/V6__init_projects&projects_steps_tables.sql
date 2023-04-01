@@ -11,7 +11,6 @@ create table PROJECT_STEPS(
     id long primary key auto_increment,
     title varchar(100) not null,
     content varchar(100) not null,
-    project_id long null
+    project_id long null,
+    foreign key (project_id) references PROJECTS (id)
 );
-alter table PROJECT_STEPS
-    add foreign key (project_id) references PROJECTS (id);

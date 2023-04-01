@@ -7,12 +7,14 @@ import java.util.Set;
 @Table(name = "NOTE_GROUPS")
 public class NoteGroup extends BaseNote {
 
-//    @Embedded
-//    @AttributeOverrides({
-//                    @AttributeOverride(column = @Column(name = "updatedOn"), name = "updatedOn")
-//            }
-//    )
-//    private Audit audit = new Audit();
+    /*
+    @Embedded
+    @AttributeOverrides({
+                    @AttributeOverride(column = @Column(name = "updatedOn"), name = "updatedOn")
+            }
+    )
+    private Audit audit = new Audit();
+     */
 
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -20,8 +22,20 @@ public class NoteGroup extends BaseNote {
     )
     private Set<Note> notes;
 
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID")
+    private Project project;
+
     public Set<Note> getNotes() {
         return notes;
+    }
+
+    void setProject(final Project project) {
+        this.project = project;
+    }
+
+    Project getProject() {
+        return project;
     }
 
     void setNotes(final Set<Note> notes) {

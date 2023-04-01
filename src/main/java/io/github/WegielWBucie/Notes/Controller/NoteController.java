@@ -39,16 +39,7 @@ class NoteController {
         return ResponseEntity.ok(noteRepository.findAll(page).getContent());
     }
 
-    @GetMapping(path = "/notes/{ID}")
-    ResponseEntity<?> findNoteByID(@PathVariable @Valid final Long ID) {
-        if(!noteRepository.existsById(ID)) {
-            logger.error("No note with selected ID exists. ( ID = " + ID + " )");
-            return ResponseEntity.notFound().build();
-        }
 
-        logger.warn("Exposing note: " + ID);
-        return ResponseEntity.ok(noteRepository.findById(ID));
-    }
 
     @PutMapping(path = "/notes/{ID}")
     ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note toUpdate) {

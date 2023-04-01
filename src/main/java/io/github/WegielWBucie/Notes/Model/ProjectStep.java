@@ -1,16 +1,10 @@
 package io.github.WegielWBucie.Notes.Model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-@Table(name = "PROJECTS")
-public class Project {
-
-    @OneToMany(mappedBy = "project")
-    private Set<NoteGroup> groups;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
-    private Set<ProjectStep> steps;
+@Table(name = "PROJECT_STEPS")
+class ProjectStep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,21 +12,9 @@ public class Project {
     protected String title;
     protected String content;
 
-    Set<NoteGroup> getGroups() {
-        return groups;
-    }
-
-    Set<ProjectStep> getSteps() {
-        return steps;
-    }
-
-    void setSteps(final Set<ProjectStep> steps) {
-        this.steps = steps;
-    }
-
-    void setGroups(final Set<NoteGroup> groups) {
-        this.groups = groups;
-    }
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID")
+    private Project project;
 
     public Long getID() {
         return ID;
@@ -56,5 +38,13 @@ public class Project {
 
     void setContent(final String content) {
         this.content = content;
+    }
+
+    Project getProject() {
+        return project;
+    }
+
+    void setProject(final Project project) {
+        this.project = project;
     }
 }

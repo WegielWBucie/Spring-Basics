@@ -7,5 +7,5 @@ public interface ProjectRepository {
     List<Project> findAll();
     Optional<Project> findByID(Long ID);
 
-    NoteGroup save(Project entity);
+    Project save(Project entity);
 }
