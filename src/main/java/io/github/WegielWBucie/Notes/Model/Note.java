@@ -19,7 +19,16 @@ public class Note extends BaseNote {
             @AttributeOverride(column = @Column(name = "updatedOn"), name = "updatedOn")
         }
     )
-    private Audit audit = new Audit();
+    private final Audit audit = new Audit();
+
+    public Note() {}
+
+    public Note(String title, String content, int priority) {
+        this.title = title;
+        this.content = content;
+        this.priority = priority;
+
+    }
 
     public LocalDateTime getExpiration() {
         return expiration;
