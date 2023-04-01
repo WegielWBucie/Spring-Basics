@@ -4,14 +4,13 @@ import io.github.WegielWBucie.Notes.Model.NoteGroup;
 import io.github.WegielWBucie.Notes.Model.NoteGroupRepository;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupWriteModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TaskGroupService {
+public class NoteGroupService {
     /*
         Intermediate level between
         repository & controller.
@@ -19,7 +18,7 @@ public class TaskGroupService {
 
     private NoteGroupRepository repository;
 
-    TaskGroupService(final NoteGroupRepository repository) {
+    NoteGroupService(final NoteGroupRepository repository) {
         this.repository = repository;
     }
 
