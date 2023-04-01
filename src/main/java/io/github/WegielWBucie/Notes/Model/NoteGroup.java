@@ -6,14 +6,6 @@ import java.util.Set;
 @Entity
 @Table(name = "NOTE_GROUPS")
 public class NoteGroup extends BaseNote {
-    /*
-    @Embedded
-    @AttributeOverrides({
-                    @AttributeOverride(column = @Column(name = "updatedOn"), name = "updatedOn")
-            }
-    )
-    private Audit audit = new Audit();
-     */
 
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,

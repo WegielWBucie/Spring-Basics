@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class GroupReadModel {
+public class GroupReadModel {
     private String title;
     private String content;
     /**

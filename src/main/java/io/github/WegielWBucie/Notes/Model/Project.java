@@ -22,7 +22,11 @@ public class Project {
         return groups;
     }
 
-    Set<ProjectStep> getSteps() {
+    public Set<ProjectStep> getSteps() {
+        /*
+            Deep copy of steps should be returned,
+            TODO;
+         */
         return steps;
     }
 
@@ -57,4 +61,6 @@ public class Project {
     void setContent(final String content) {
         this.content = content;
     }
+
+
 }

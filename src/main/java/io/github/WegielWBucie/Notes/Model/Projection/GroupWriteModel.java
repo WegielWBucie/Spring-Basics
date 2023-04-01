@@ -5,7 +5,7 @@ import io.github.WegielWBucie.Notes.Model.NoteGroup;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class GroupWriteModel {
+public class GroupWriteModel {
     private String title;
     private String content;
 
