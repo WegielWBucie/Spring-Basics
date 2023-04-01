@@ -2,6 +2,8 @@ package io.github.WegielWBucie.Notes.Model.Projection;
 
 import io.github.WegielWBucie.Notes.Model.Note;
 
+import java.time.LocalDateTime;
+
 public class GroupNoteWriteModel {
 
     /*
@@ -11,6 +13,7 @@ public class GroupNoteWriteModel {
     private String title;
     private String content;
     private int priority;
+    private LocalDateTime expiration;
 
     public String getTitle() {
         return title;
@@ -36,7 +39,15 @@ public class GroupNoteWriteModel {
         this.priority = priority;
     }
 
+    public LocalDateTime getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(final LocalDateTime expiration) {
+        this.expiration = expiration;
+    }
+
     public Note toNote() {
-        return new Note(this.title, this.content, this.priority);
+        return new Note(this.title, this.content, this.priority, this.expiration);
     }
 }

@@ -23,7 +23,7 @@ public class Note extends BaseNote {
 
     public Note() {}
 
-    public Note(String title, String content, int priority) {
+    public Note(String title, String content, int priority, LocalDateTime expiration) {
         this.title = title;
         this.content = content;
         this.priority = priority;

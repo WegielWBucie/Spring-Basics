@@ -6,7 +6,6 @@ import java.util.Set;
 @Entity
 @Table(name = "NOTE_GROUPS")
 public class NoteGroup extends BaseNote {
-
     /*
     @Embedded
     @AttributeOverrides({
@@ -26,6 +25,8 @@ public class NoteGroup extends BaseNote {
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
 
+    public NoteGroup() {}
+
     public Set<Note> getNotes() {
         return notes;
     }
@@ -38,7 +39,7 @@ public class NoteGroup extends BaseNote {
         return project;
     }
 
-    void setNotes(final Set<Note> notes) {
+    public void setNotes(final Set<Note> notes) {
         this.notes = notes;
     }
 }

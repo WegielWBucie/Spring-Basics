@@ -8,7 +8,7 @@ public class GroupNoteReadModel {
     private String content;
     private int priority;
 
-    GroupNoteReadModel(Note source) {
+    public GroupNoteReadModel(Note source) {
         this.title = source.getTitle();
         this.content = source.getContent();
         this.priority = source.getPriority();
