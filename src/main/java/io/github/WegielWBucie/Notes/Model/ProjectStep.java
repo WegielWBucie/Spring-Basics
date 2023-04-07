@@ -4,13 +4,13 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "PROJECT_STEPS")
-class ProjectStep {
+public class ProjectStep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long ID;
-    protected String title;
-    protected String content;
+    private Long ID;
+    private String title;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_ID")

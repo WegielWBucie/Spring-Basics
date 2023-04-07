@@ -22,7 +22,7 @@ public class NoteGroupService {
     private NoteGroupRepository noteGroupRepository;
     private NoteRepository noteRepository;
 
-    NoteGroupService(final NoteGroupRepository repository, final NoteConfigurationProperties config) {
+    NoteGroupService(final NoteGroupRepository repository) {
         this.noteGroupRepository = repository;
     }
 
@@ -39,7 +39,7 @@ public class NoteGroupService {
 
     public void toggleGroup(final Long groupID) {
         NoteGroup result = noteGroupRepository.findByID(groupID)
-                .orElseThrow(() -> new IllegalArgumentException("NoteGroup wihth given ID not found."));
+                .orElseThrow(() -> new IllegalArgumentException("NoteGroup with given ID not found."));
         result.setTitle("<Closed> " + result.getTitle());
     }
 
