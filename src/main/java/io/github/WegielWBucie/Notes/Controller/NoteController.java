@@ -39,8 +39,6 @@ class NoteController {
         return ResponseEntity.ok(noteRepository.findAll(page).getContent());
     }
 
-
-
     @PutMapping(path = "/notes/{ID}")
     ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note toUpdate) {
         if(!noteRepository.existsById(ID)) {

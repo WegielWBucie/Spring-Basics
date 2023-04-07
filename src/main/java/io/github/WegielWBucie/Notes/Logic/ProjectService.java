@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 @Service
 class ProjectService {
 
+
+
     private ProjectRepository projectRepository;
     private NoteGroupRepository noteGroupRepository;
     private NoteConfigurationProperties config;
@@ -55,5 +57,4 @@ class ProjectService {
                 }).orElseThrow(() -> new IllegalArgumentException("No project with given ID found."));
         return new GroupReadModel(result);
     }
-
 }
