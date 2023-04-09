@@ -6,13 +6,14 @@ import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 class ProjectService {
-
-
 
     private ProjectRepository projectRepository;
     private NoteGroupRepository noteGroupRepository;
@@ -40,11 +41,11 @@ class ProjectService {
 
         NoteGroup result = projectRepository.findByID(projectID)
                 .map(project -> {
-                    NoteGroup res = new NoteGroup();
-                    res.setTitle(project.getTitle());
-                    res.setContent(project.getContent());
-                    res.setPriority(priority);
-                    res.setNotes(project.getSteps().stream()
+                    NoteGroup targetGroup = new NoteGroup();
+                    targetGroup.setTitle(project.getTitle());
+                    targetGroup.setContent(project.getContent());
+                    targetGroup.setPriority(priority);
+                    targetGroup.setNotes(project.getSteps().stream()
                             .map(projectStep -> new Note(
                                     project.getTitle(),
                                     projectStep.getContent(),
@@ -53,7 +54,8 @@ class ProjectService {
                             ).collect(Collectors.toSet())
                     );
 
-                    return res;
+                    targetGroup.setProject(project);
+                    return noteGroupRepository.save(targetGroup);
                 }).orElseThrow(() -> new IllegalArgumentException("No project with given ID found."));
         return new GroupReadModel(result);
     }

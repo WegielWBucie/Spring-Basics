@@ -18,6 +18,8 @@ public class Project {
     protected String title;
     protected String content;
 
+    Project() {}
+
     Set<NoteGroup> getGroups() {
         return groups;
     }

@@ -9,6 +9,7 @@ import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +38,12 @@ public class NoteGroupService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void toggleGroup(final Long groupID) {
         NoteGroup result = noteGroupRepository.findByID(groupID)
                 .orElseThrow(() -> new IllegalArgumentException("NoteGroup with given ID not found."));
         result.setTitle("<Closed> " + result.getTitle());
+//        noteGroupRepository.save(result);
     }
 
 }

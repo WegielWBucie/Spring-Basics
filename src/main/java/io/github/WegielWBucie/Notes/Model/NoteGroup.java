@@ -23,11 +23,11 @@ public class NoteGroup extends BaseNote {
         return notes;
     }
 
-    void setProject(final Project project) {
+    public void setProject(final Project project) {
         this.project = project;
     }
 
-    Project getProject() {
+    public Project getProject() {
         return project;
     }
 
