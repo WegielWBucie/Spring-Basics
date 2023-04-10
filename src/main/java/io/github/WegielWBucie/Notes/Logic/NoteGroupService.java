@@ -1,5 +1,6 @@
 package io.github.WegielWBucie.Notes.Logic;
 
+import io.github.WegielWBucie.Notes.Model.BaseNote;
 import io.github.WegielWBucie.Notes.Model.NoteGroup;
 import io.github.WegielWBucie.Notes.Model.NoteGroupRepository;
 import io.github.WegielWBucie.Notes.Model.NoteRepository;
@@ -20,11 +21,12 @@ public class NoteGroupService {
      *    Intermediate level between
      *    repository & controller.
      */
-    private NoteGroupRepository noteGroupRepository;
-    private NoteRepository noteRepository;
+    private final NoteGroupRepository noteGroupRepository;
+    private final NoteRepository noteRepository;
 
-    NoteGroupService(final NoteGroupRepository repository) {
+    NoteGroupService(final NoteGroupRepository repository, final NoteRepository noteRepository) {
         this.noteGroupRepository = repository;
+        this.noteRepository = noteRepository;
     }
 
     public GroupReadModel createGroup(final GroupWriteModel source) {
@@ -38,12 +40,12 @@ public class NoteGroupService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+//    @Transactional
     public void toggleGroup(final Long groupID) {
         NoteGroup result = noteGroupRepository.findByID(groupID)
                 .orElseThrow(() -> new IllegalArgumentException("NoteGroup with given ID not found."));
         result.setTitle("<Closed> " + result.getTitle());
-//        noteGroupRepository.save(result);
+        noteGroupRepository.save(result);
     }
 
 }
