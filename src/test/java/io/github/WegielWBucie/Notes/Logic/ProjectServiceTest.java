@@ -1,17 +1,16 @@
 package io.github.WegielWBucie.Notes.Logic;
 
-import io.github.WegielWBucie.Notes.Model.NoteGroup;
-import io.github.WegielWBucie.Notes.Model.NoteGroupRepository;
-import io.github.WegielWBucie.Notes.Model.ProjectRepository;
+import io.github.WegielWBucie.Notes.Model.*;
+import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -56,6 +55,7 @@ class ProjectServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("No project");
     }
+
     @Test
     @DisplayName("Should throw IllegalArgumentException when configured to allow only 1 group and no project with given ID.")
     void createGroup_noMultipleGroupsConfig_And_noProject_throwsIllegalArgumentException() {
@@ -76,6 +76,48 @@ class ProjectServiceTest {
                 .hasMessageContaining("No project");
     }
 
+    @Test
+    @DisplayName("Should create and save new group from project.")
+    void createGroup_configOk_And_existingProject_createsAndSavesGroup() {
+        /* Given */
+        var project = projectWith("ProjectTitle", "ProjectContent", Set.of("A", "B", "C", "D"));
+        var mockRepository = mock(ProjectRepository.class);
+        when(mockRepository.findByID(anyLong())).thenReturn(Optional.of(project));
+        /* and */
+        var expiration = LocalDate.now().atStartOfDay();
+        /* and */
+        var inMemoryGroupRepo = inMemoryNoteGroupRepository();
+        /* and */
+        int countBeforeCall = inMemoryGroupRepo.count();
+        /* and */
+        var mockConfig = configurationReturning(true);
+        /* System under test */
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig);
+        /* When */
+        GroupReadModel result = toTest.createGroup(1L, 10, expiration);
+        /* Then */
+        assertThat(result.getTitle()).isEqualTo("ProjectTitle");
+        assertThat(result.getContent()).isEqualTo("ProjectContent");
+        assertThat(result.getNotes().stream().anyMatch(note -> note.getTitle().equals("Title.")));
+        assertThat(countBeforeCall + 1).isEqualTo(inMemoryGroupRepo.count());
+    }
+
+    private Project projectWith(String projectTitle, String projectContent, Set<String> contents) {
+        Set<ProjectStep> steps = contents.stream()
+                .map(content -> {
+                    var step = mock(ProjectStep.class);
+                    when(step.getTitle()).thenReturn("Title.");
+                    when(step.getContent()).thenReturn(content);
+                    return step;
+                }).collect(Collectors.toSet());
+
+        var result = mock(Project.class);
+        when(result.getTitle()).thenReturn(projectTitle);
+        when(result.getContent()).thenReturn(projectContent);
+        when(result.getSteps()).thenReturn(steps);
+        return result;
+    }
+
     private NoteGroupRepository groupRepositoryReturning(final boolean result) {
         NoteGroupRepository mockGroupRepository = mock(NoteGroupRepository.class);
         when(mockGroupRepository.existsByProjectID(anyLong())).thenReturn(result);
@@ -91,40 +133,48 @@ class ProjectServiceTest {
         return mockConfig;
     }
 
-    private NoteGroupRepository inMemoryNoteGroupRepository() {
-        return new NoteGroupRepository() {
-            private Long index;
-            private Map<Long, NoteGroup> map = new HashMap<>();
+    private InMemoryGroupRepository inMemoryNoteGroupRepository() {
+        return new InMemoryGroupRepository();
+    }
 
-            @Override
-            public List<NoteGroup> findAll() {
-                return map.values().stream().toList();
-            }
+    private static class InMemoryGroupRepository implements NoteGroupRepository {
+        private Long index = 0L;
+        private Map<Long, NoteGroup> map = new HashMap<>();
 
-            @Override
-            public Optional<NoteGroup> findByID(final Long ID) {
-                return Optional.ofNullable(map.get(ID));
-            }
+        public int count() {
+            return map.values().size();
+        }
 
-            @Override
-            public NoteGroup save(final NoteGroup entity) {
-                if(entity.getID() == 0) {
-                    try {
-                        NoteGroup.class.getDeclaredField("ID").set(entity, ++index);
-                    }
-                    catch(NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
+        @Override
+        public List<NoteGroup> findAll() {
+            return map.values().stream().toList();
+        }
+
+        @Override
+        public Optional<NoteGroup> findByID(final Long ID) {
+            return Optional.ofNullable(map.get(ID));
+        }
+
+        @Override
+        public NoteGroup save(final NoteGroup entity) {
+            if(entity.getID() == null) {
+                try {
+                    Field idField = BaseNote.class.getDeclaredField("ID");
+                    idField.setAccessible(true);
+                    idField.set(entity, ++index);
                 }
-                map.put(entity.getID(), entity);
-                return entity;
+                catch(NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            map.put(entity.getID(), entity);
+            return entity;
+        }
 
-            @Override
-            public boolean existsByProjectID(final Long projectID) {
-                return map.values().stream()
-                        .anyMatch(noteGroup -> noteGroup.getProject() != null && noteGroup.getProject().getID() == projectID);
-            }
-        };
+        @Override
+        public boolean existsByProjectID(final Long projectID) {
+            return map.values().stream()
+                    .anyMatch(noteGroup -> noteGroup.getProject() != null && noteGroup.getProject().getID() == projectID);
+        }
     }
 }

@@ -3,7 +3,7 @@ package io.github.WegielWBucie.Notes.Model;
 import javax.persistence.*;
 
 @MappedSuperclass
-abstract class BaseNote {
+public abstract class BaseNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long ID;

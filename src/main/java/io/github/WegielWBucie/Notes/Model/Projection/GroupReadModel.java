@@ -4,6 +4,7 @@ import io.github.WegielWBucie.Notes.Model.Note;
 import io.github.WegielWBucie.Notes.Model.NoteGroup;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,8 @@ public class GroupReadModel {
         this.title = source.getTitle();
         this.content = source.getContent();
         source.getNotes().stream()
-                .map(Note::getExpiration)
+                .map(note -> getExpiration())
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date -> expiration = date);
 

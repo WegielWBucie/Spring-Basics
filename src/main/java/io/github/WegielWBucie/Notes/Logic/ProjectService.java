@@ -57,6 +57,7 @@ class ProjectService {
                     targetGroup.setProject(project);
                     return noteGroupRepository.save(targetGroup);
                 }).orElseThrow(() -> new IllegalArgumentException("No project with given ID found."));
+
         return new GroupReadModel(result);
     }
 }
