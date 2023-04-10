@@ -57,8 +57,8 @@ class ProjectServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw IllegalArgumentException when configured to allow only 1 group and no project with given ID.")
-    void createGroup_noMultipleGroupsConfig_And_noProject_throwsIllegalArgumentException() {
+    @DisplayName("Should throw IllegalArgumentException when configured to allow only 1 group and groups and no project with given ID.")
+    void createGroup_noMultipleGroupsConfig_And_noGroupsAndNoProject_throwsIllegalArgumentException() {
         /* Given */
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findByID(anyLong())).thenReturn(Optional.empty());

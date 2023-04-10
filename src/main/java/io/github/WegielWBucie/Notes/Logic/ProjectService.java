@@ -6,18 +6,15 @@ import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 class ProjectService {
 
-    private ProjectRepository projectRepository;
-    private NoteGroupRepository noteGroupRepository;
-    private NoteConfigurationProperties config;
+    private final ProjectRepository projectRepository;
+    private final NoteGroupRepository noteGroupRepository;
+    private final NoteConfigurationProperties config;
 
     ProjectService(final ProjectRepository projectRepository, final NoteGroupRepository noteGroupRepository, final NoteConfigurationProperties config) {
         this.projectRepository = projectRepository;
