@@ -23,7 +23,7 @@ class ProjectServiceTest {
 
     @Test
     @DisplayName("Should throw IllegalStateException when configured to allow only 1 group and group already exists.")
-    void createGroup_noMultipleGroupsConfig_And_openGroups_throwsIllegalStateException() {
+    void createGroup_noMultipleGroupsConfig_And_groupExists_throwsIllegalStateException() {
         /* Given */
         var mockGroupRepository = groupRepositoryReturning(true);
         /* and */
@@ -57,7 +57,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw IllegalArgumentException when configured to allow only 1 group and groups and no project with given ID.")
+    @DisplayName("Should throw IllegalArgumentException when configured to allow only 1 group and no groups and no project with given ID.")
     void createGroup_noMultipleGroupsConfig_And_noGroupsAndNoProject_throwsIllegalArgumentException() {
         /* Given */
         var mockRepository = mock(ProjectRepository.class);
@@ -69,7 +69,7 @@ class ProjectServiceTest {
         /* System under test */
         var toTest = new ProjectService(mockRepository, null, mockConfig);
         /* When */
-        var exception = catchThrowable(() -> toTest.createGroup(0L, 0, LocalDateTime.now()));
+        var exception = catchThrowable(() -> toTest.createGroup(1L, 0, LocalDateTime.now()));
         /* Then */
         assertThat(exception)
                 .isInstanceOf(IllegalArgumentException.class)
