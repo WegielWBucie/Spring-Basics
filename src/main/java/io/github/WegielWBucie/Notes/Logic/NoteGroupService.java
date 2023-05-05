@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 @RequestScope
 public class NoteGroupService {
     /**
