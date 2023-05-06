@@ -6,6 +6,7 @@ import io.github.WegielWBucie.Notes.Model.ProjectRepository;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Configuration
 class LogicConfiguration {
@@ -17,8 +18,9 @@ class LogicConfiguration {
     ) {
         return new ProjectService(repository, noteGroupRepository, noteConfigurationProperties);
     }
-    
+
     @Bean
+    @RequestScope
     NoteGroupService noteGroupService(final NoteGroupRepository noteGroupRepository,
                                       final NoteRepository noteRepository
     ) {

@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Service
 class ProjectService {
 
     private final ProjectRepository projectRepository;

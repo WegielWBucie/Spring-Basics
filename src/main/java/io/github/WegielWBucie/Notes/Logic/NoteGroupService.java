@@ -1,21 +1,14 @@
 package io.github.WegielWBucie.Notes.Logic;
 
-import io.github.WegielWBucie.Notes.Model.BaseNote;
 import io.github.WegielWBucie.Notes.Model.NoteGroup;
 import io.github.WegielWBucie.Notes.Model.NoteGroupRepository;
 import io.github.WegielWBucie.Notes.Model.NoteRepository;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupWriteModel;
-import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Service
-@RequestScope
 public class NoteGroupService {
     /**
      *    Intermediate level between
