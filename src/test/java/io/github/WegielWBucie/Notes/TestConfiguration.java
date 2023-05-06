@@ -4,6 +4,7 @@ import io.github.WegielWBucie.Notes.Model.Note;
 import io.github.WegielWBucie.Notes.Model.NoteRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,6 +13,7 @@ import java.util.*;
 @Configuration
 class TestConfiguration {
     @Bean
+    @Profile({"integration"})
     NoteRepository testRepo() {
         return new NoteRepository() {
             private Map<Long, Note> notes = new HashMap<>();

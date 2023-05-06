@@ -3,7 +3,6 @@ package io.github.WegielWBucie.Notes.Logic;
 import io.github.WegielWBucie.Notes.Model.*;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;

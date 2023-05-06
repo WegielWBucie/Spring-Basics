@@ -26,6 +26,4 @@ class LogicConfiguration {
     ) {
         return new NoteGroupService(noteGroupRepository, noteRepository);
     }
-
-
 }
