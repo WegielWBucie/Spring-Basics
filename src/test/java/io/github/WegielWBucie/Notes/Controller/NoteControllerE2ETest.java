@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class NoteControllerE2ETest {
     @LocalServerPort
@@ -28,14 +27,14 @@ class NoteControllerE2ETest {
     @Test
     void httpGet_returnsAllNotes() {
         /* Given */
+        int initialSize = noteRepository.findAll().size();
         noteRepository.save(new Note("TestTitle", "Content1", 1, LocalDateTime.now().plusDays(3)));
         noteRepository.save(new Note("TestTitle2", "Content2", 2, LocalDateTime.now().plusDays(3)));
-
         /* When */
         Note[] result = restTemplate.getForObject("http://localhost:" + this.port + "/notes", Note[].class);
 
         /* Then */
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(initialSize + 2);
     }
 
 }
