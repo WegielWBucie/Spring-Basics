@@ -34,9 +34,9 @@ class NoteController {
     }
 
     @GetMapping(path = "/notes")
-    ResponseEntity<List<Note>> findALlNotes(Pageable page) {
-
-        return ResponseEntity.ok(noteRepository.findAll(page).getContent());
+    ResponseEntity<List<Note>> findALlNotes() {
+        logger.warn("Exposing all tasks.");
+        return ResponseEntity.ok(noteRepository.findAll());
     }
 
     @PutMapping(path = "/notes/{ID}")
