@@ -1,5 +1,6 @@
 package io.github.WegielWBucie.Notes;
 
+import io.github.WegielWBucie.Notes.Model.BaseNote;
 import io.github.WegielWBucie.Notes.Model.Note;
 import io.github.WegielWBucie.Notes.Model.NoteRepository;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Field;
 import java.util.*;
 
 @Configuration
@@ -60,7 +62,17 @@ class TestConfiguration {
 
             @Override
             public Note save(final Note entity) {
-                return notes.put((long)(notes.size() + 1), entity);
+                Long key = (long) (notes.size() + 1);
+                try {
+                    Field idField = BaseNote.class.getDeclaredField("ID");
+                    idField.setAccessible(true);
+                    idField.set(entity, key);
+                } catch(NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                notes.put(key, entity);
+                return notes.get(key);
             }
 
             @Override

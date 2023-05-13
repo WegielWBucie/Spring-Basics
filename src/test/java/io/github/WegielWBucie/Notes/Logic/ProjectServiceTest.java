@@ -3,6 +3,7 @@ package io.github.WegielWBucie.Notes.Logic;
 import io.github.WegielWBucie.Notes.Model.*;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
