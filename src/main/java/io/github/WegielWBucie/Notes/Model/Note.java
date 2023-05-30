@@ -27,7 +27,7 @@ public class Note extends BaseNote {
         this.title = title;
         this.content = content;
         this.priority = priority;
-
+        this.expiration = expiration;
     }
 
     public LocalDateTime getExpiration() {
