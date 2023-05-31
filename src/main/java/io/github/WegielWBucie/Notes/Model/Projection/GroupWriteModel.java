@@ -38,9 +38,10 @@ public class GroupWriteModel {
     public NoteGroup toGroup() {
         NoteGroup result = new NoteGroup();
         result.setTitle(this.title);
+        result.setContent(this.content);
         result.setNotes(
                 notes.stream()
-                        .map(GroupNoteWriteModel::toNote)
+                        .map(source -> source.toNote(result))
                         .collect(Collectors.toSet())
         );
         return result;

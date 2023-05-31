@@ -14,9 +14,10 @@ class LogicConfiguration {
     @Bean
     ProjectService projectService(final ProjectRepository repository,
                                   final NoteGroupRepository noteGroupRepository,
+                                  final NoteGroupService noteGroupService,
                                   final NoteConfigurationProperties noteConfigurationProperties
     ) {
-        return new ProjectService(repository, noteGroupRepository, noteConfigurationProperties);
+        return new ProjectService(repository, noteGroupRepository, noteGroupService, noteConfigurationProperties);
     }
 
     @Bean

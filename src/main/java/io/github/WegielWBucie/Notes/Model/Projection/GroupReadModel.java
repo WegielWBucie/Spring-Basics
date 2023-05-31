@@ -6,6 +6,7 @@ import io.github.WegielWBucie.Notes.Model.NoteGroup;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
@@ -20,11 +21,11 @@ public class GroupReadModel {
     public GroupReadModel(NoteGroup source) {
         this.title = source.getTitle();
         this.content = source.getContent();
-        source.getNotes().stream()
-                .map(note -> getExpiration())
-                .filter(Objects::nonNull)
+        this.expiration = source.getNotes().stream()
+                .map(Note::getExpiration)
+                .filter(Predicate.not(Objects::isNull))
                 .max(LocalDateTime::compareTo)
-                .ifPresent(date -> expiration = date);
+                .orElse(null);
 
         notes = source.getNotes().stream()
                 .map(GroupNoteReadModel::new)

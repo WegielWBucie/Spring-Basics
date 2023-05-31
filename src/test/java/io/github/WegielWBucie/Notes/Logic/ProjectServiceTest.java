@@ -3,7 +3,6 @@ package io.github.WegielWBucie.Notes.Logic;
 import io.github.WegielWBucie.Notes.Model.*;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +29,7 @@ class ProjectServiceTest {
         /* and */
         NoteConfigurationProperties mockConfig = configurationReturning(false);
         /* System under test */
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(null, mockGroupRepository, null, mockConfig);
         /* When */
         var exception = catchThrowable(() -> toTest.createGroup(0L, 0, LocalDateTime.now()));
         /* Then */
@@ -48,7 +47,7 @@ class ProjectServiceTest {
         /* and */
         NoteConfigurationProperties mockConfig = configurationReturning(true);
         /* System under test */
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, null, mockConfig);
         /* When */
         var exception = catchThrowable(() -> toTest.createGroup(0L, 0, LocalDateTime.now()));
         /* Then */
@@ -68,7 +67,7 @@ class ProjectServiceTest {
         /* and */
         NoteConfigurationProperties mockConfig = configurationReturning(true);
         /* System under test */
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, mockGroupRepository, null, mockConfig);
         /* When */
         var exception = catchThrowable(() -> toTest.createGroup(1L, 0, LocalDateTime.now()));
         /* Then */
@@ -88,19 +87,26 @@ class ProjectServiceTest {
         var expiration = LocalDate.now().atStartOfDay();
         /* and */
         var inMemoryGroupRepo = inMemoryNoteGroupRepository();
+        var serviceWithInMemRepo = dummyGroupService(inMemoryGroupRepo);
         /* and */
         int countBeforeCall = inMemoryGroupRepo.count();
         /* and */
         var mockConfig = configurationReturning(true);
         /* System under test */
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, serviceWithInMemRepo, mockConfig);
         /* When */
         GroupReadModel result = toTest.createGroup(1L, 10, expiration);
         /* Then */
         assertThat(result.getTitle()).isEqualTo("ProjectTitle");
         assertThat(result.getContent()).isEqualTo("ProjectContent");
-        assertThat(result.getNotes().stream().anyMatch(note -> note.getTitle().equals("Title.")));
+        assertThat(result.getNotes().stream().allMatch(note -> note.getTitle().equals("Title.")));
+        assertThat(result.getNotes().stream().allMatch(date -> date.equals(expiration)));
+        assertThat(result.getExpiration().equals(expiration));
         assertThat(countBeforeCall + 1).isEqualTo(inMemoryGroupRepo.count());
+    }
+
+    private NoteGroupService dummyGroupService(final InMemoryGroupRepository inMemoryGroupRepo) {
+        return new NoteGroupService(inMemoryGroupRepo, null);
     }
 
     private Project projectWith(String projectTitle, String projectContent, Set<String> contents) {

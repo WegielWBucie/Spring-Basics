@@ -24,10 +24,17 @@ public class Note extends BaseNote {
     public Note() {}
 
     public Note(String title, String content, int priority, LocalDateTime expiration) {
+        this(title, content, priority, expiration, null);
+    }
+
+    public Note(String title, String content, int priority, LocalDateTime expiration, NoteGroup group) {
         this.title = title;
         this.content = content;
         this.priority = priority;
         this.expiration = expiration;
+        if(group != null) {
+            this.group = group;
+        }
     }
 
     public LocalDateTime getExpiration() {

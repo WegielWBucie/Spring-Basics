@@ -1,7 +1,9 @@
 package io.github.WegielWBucie.Notes.Logic;
 
 import io.github.WegielWBucie.Notes.Model.*;
+import io.github.WegielWBucie.Notes.Model.Projection.GroupNoteWriteModel;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
+import io.github.WegielWBucie.Notes.Model.Projection.GroupWriteModel;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 
 import java.time.LocalDateTime;
@@ -12,11 +14,13 @@ class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final NoteGroupRepository noteGroupRepository;
+    private final NoteGroupService noteGroupService;
     private final NoteConfigurationProperties config;
 
-    ProjectService(final ProjectRepository projectRepository, final NoteGroupRepository noteGroupRepository, final NoteConfigurationProperties config) {
+    ProjectService(final ProjectRepository projectRepository, final NoteGroupRepository noteGroupRepository, final NoteGroupService service, final NoteConfigurationProperties config) {
         this.projectRepository = projectRepository;
         this.noteGroupRepository = noteGroupRepository;
+        this.noteGroupService = service;
         this.config = config;
     }
 
@@ -34,25 +38,24 @@ class ProjectService {
             throw new IllegalStateException("Only 1 group from project is allowed.");
         }
 
-        NoteGroup result = projectRepository.findByID(projectID)
+        return projectRepository.findByID(projectID)
                 .map(project -> {
-                    NoteGroup targetGroup = new NoteGroup();
+                    GroupWriteModel targetGroup = new GroupWriteModel();
                     targetGroup.setTitle(project.getTitle());
                     targetGroup.setContent(project.getContent());
-                    targetGroup.setPriority(priority);
                     targetGroup.setNotes(project.getSteps().stream()
-                            .map(projectStep -> new Note(
-                                    project.getTitle(),
-                                    projectStep.getContent(),
-                                    priority,
-                                    expiration)
+                            .map(projectStep -> {
+                                        var note = new GroupNoteWriteModel();
+                                        note.setTitle(projectStep.getTitle());
+                                        note.setContent(projectStep.getContent());
+                                        note.setPriority(priority);
+                                        note.setExpiration(expiration);
+                                        return note;
+                                    }
                             ).collect(Collectors.toSet())
                     );
 
-                    targetGroup.setProject(project);
-                    return noteGroupRepository.save(targetGroup);
+                    return noteGroupService.createGroup(targetGroup);
                 }).orElseThrow(() -> new IllegalArgumentException("No project with given ID found."));
-
-        return new GroupReadModel(result);
     }
 }

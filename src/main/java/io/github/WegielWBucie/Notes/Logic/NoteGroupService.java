@@ -15,11 +15,9 @@ public class NoteGroupService {
      *    repository & controller.
      */
     private final NoteGroupRepository noteGroupRepository;
-    private final NoteRepository noteRepository;
 
     NoteGroupService(final NoteGroupRepository repository, final NoteRepository noteRepository) {
         this.noteGroupRepository = repository;
-        this.noteRepository = noteRepository;
     }
 
     public GroupReadModel createGroup(final GroupWriteModel source) {
