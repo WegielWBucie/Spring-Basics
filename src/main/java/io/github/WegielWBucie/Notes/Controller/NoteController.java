@@ -57,7 +57,7 @@ class NoteController {
                     noteRepository.save(note); /* equivalent to @Transactional */
                 });
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/notes")

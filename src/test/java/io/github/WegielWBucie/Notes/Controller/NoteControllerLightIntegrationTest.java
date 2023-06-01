@@ -33,7 +33,7 @@ class NoteControllerLightIntegrationTest {
     private NoteRepository noteRepository;
 
     @Test
-    void httpGet_returnsGivenIDTask() throws Exception {
+    void httpGet_returnsGivenIDNote() throws Exception {
         /* Given */
 
         Note note = new Note(

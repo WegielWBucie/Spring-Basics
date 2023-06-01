@@ -26,7 +26,7 @@ class NoteControllerIntegrationTest {
     private NoteRepository noteRepository;
 
     @Test
-    void httpGet_returnsGivenIDTask() throws Exception {
+    void httpGet_returnsGivenIDNote() throws Exception {
         /* Given */
         Long ID = noteRepository.save(new Note(
                 "ITestTitle", "ITestContent", 1, LocalDateTime.of(2023, 2,28, 23,59))
@@ -35,4 +35,15 @@ class NoteControllerIntegrationTest {
         /* When + Then */
         mockMvc.perform(get("/notes/" + ID)).andExpect(status().is2xxSuccessful());
     }
+
+    @Test
+    void httpPost_addsNewNote() throws Exception {
+
+
+
+
+    }
+
+
+
 }
