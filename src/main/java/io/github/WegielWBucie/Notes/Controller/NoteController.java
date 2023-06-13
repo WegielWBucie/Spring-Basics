@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping(value = "/notes")
 class NoteController {
 
     private final NoteRepository noteRepository;
@@ -27,24 +28,24 @@ class NoteController {
         this.noteRepository = noteRepository;
     }
 
-    @GetMapping(path = "/notes/", params = {"!sort", "!page", "!size"})
+    @GetMapping(path = "/", params = {"!sort", "!page", "!size"})
     ResponseEntity<?> findAllNotes() {
         logger.warn("Exposing all tasks.");
         return ResponseEntity.ok(noteRepository.findAll());
     }
 
-    @GetMapping(path = "/notes")
+    @GetMapping
     ResponseEntity<List<Note>> findALlNotes() {
         logger.warn("Exposing all tasks.");
         return ResponseEntity.ok(noteRepository.findAll());
     }
 
-     @GetMapping(path = "/notes/{ID}")
+     @GetMapping(path = "/{ID}")
      ResponseEntity<Optional<Note>> findALlNotes(@PathVariable @Valid final Long ID) {
         return ResponseEntity.ok(noteRepository.findById(ID));
     }
 
-    @PutMapping(path = "/notes/{ID}")
+    @PutMapping(path = "/{ID}")
     ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note toUpdate) {
         if(!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
@@ -60,7 +61,7 @@ class NoteController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path = "/notes")
+    @PostMapping
     ResponseEntity<?> postNote(@RequestBody @Valid Note toPost) {
         Note result = noteRepository.save(toPost);
         URI location = URI.create("/notes/" + result.getID());
@@ -68,7 +69,7 @@ class NoteController {
     }
 
     @Transactional
-    @PatchMapping(path = "/notes/{ID}")
+    @PatchMapping(path = "/{ID}")
     public ResponseEntity<?> incrementPriority(@PathVariable Long ID) {
         if(!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
@@ -82,7 +83,7 @@ class NoteController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(path = "/notes/{ID}")
+    @DeleteMapping(path = "/{ID}")
     ResponseEntity<?> deleteNote(@PathVariable @Valid Long ID) {
         try {
             noteRepository.deleteById(ID);
