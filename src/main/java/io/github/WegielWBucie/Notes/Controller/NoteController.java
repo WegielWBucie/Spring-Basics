@@ -1,5 +1,6 @@
 package io.github.WegielWBucie.Notes.Controller;
 
+import io.github.WegielWBucie.Notes.Logic.NoteService;
 import io.github.WegielWBucie.Notes.Model.Note;
 import io.github.WegielWBucie.Notes.Model.NoteRepository;
 import org.slf4j.Logger;
@@ -14,30 +15,27 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping(value = "/notes")
 class NoteController {
 
     private final NoteRepository noteRepository;
+    private final NoteService noteService;
 
     private static final Logger logger = LoggerFactory.getLogger(NoteController.class);
 
     @Autowired
-    NoteController(final NoteRepository noteRepository) {
+    NoteController(final NoteRepository noteRepository, final NoteService noteService) {
         this.noteRepository = noteRepository;
+        this.noteService = noteService;
     }
 
-    @GetMapping(path = "/", params = {"!sort", "!page", "!size"})
-    ResponseEntity<?> findAllNotes() {
+    @GetMapping(params = {"!sort", "!page", "!size"})
+    CompletableFuture<ResponseEntity<List<Note>>> findAllNotes() {
         logger.warn("Exposing all tasks.");
-        return ResponseEntity.ok(noteRepository.findAll());
-    }
-
-    @GetMapping
-    ResponseEntity<List<Note>> findALlNotes() {
-        logger.warn("Exposing all tasks.");
-        return ResponseEntity.ok(noteRepository.findAll());
+        return noteService.findAllAsync().thenApply(ResponseEntity::ok);
     }
 
      @GetMapping(path = "/{ID}")
