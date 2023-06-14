@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class GroupReadModel {
     private String title;
     private String content;
+    private boolean done;
     /**
      * Expiration of the latest note in group.
      */
@@ -30,6 +31,9 @@ public class GroupReadModel {
         notes = source.getNotes().stream()
                 .map(GroupNoteReadModel::new)
                 .collect(Collectors.toSet());
+
+        this.done = source.getNotes().stream()
+                .allMatch(Note::isDone);
     }
 
     public String getTitle() {
@@ -62,5 +66,13 @@ public class GroupReadModel {
 
     public void setNotes(final Set<GroupNoteReadModel> notes) {
         this.notes = notes;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

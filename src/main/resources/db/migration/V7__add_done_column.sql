@@ -1,0 +1,1 @@
+alter table NOTES add column done boolean default false;

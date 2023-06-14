@@ -15,7 +15,8 @@ public interface NoteRepository {
 
     Optional<Note> findById(Long ID);
 
-    List<Note> findByPriority(Long priority);
+
+    List<Note> findByDone(boolean done);
 
     boolean existsById(Long ID);
 

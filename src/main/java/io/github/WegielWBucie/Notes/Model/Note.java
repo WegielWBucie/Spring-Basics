@@ -9,6 +9,8 @@ public class Note extends BaseNote {
 
     private LocalDateTime expiration;
 
+    private boolean done;
+
     @ManyToOne
     @JoinColumn(name = "NOTE_GROUP_ID")
     private NoteGroup group;
@@ -50,6 +52,14 @@ public class Note extends BaseNote {
 
     void setGroup(NoteGroup noteGroup) {
         this.group = noteGroup;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public void updateFrom(final Note source) {

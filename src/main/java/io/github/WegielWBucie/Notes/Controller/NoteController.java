@@ -43,6 +43,12 @@ class NoteController {
         return ResponseEntity.ok(noteRepository.findById(ID));
     }
 
+     @GetMapping(path = "/search/done")
+     ResponseEntity<List<Note>> findALlNotes(@RequestParam(defaultValue = "true") boolean state) {
+        return ResponseEntity.ok(noteRepository.findByDone(state));
+    }
+
+
     @PutMapping(path = "/{ID}")
     ResponseEntity<?> editNote(@PathVariable @Valid final Long ID, @RequestBody final Note toUpdate) {
         if(!noteRepository.existsById(ID)) {
@@ -68,17 +74,17 @@ class NoteController {
 
     @Transactional
     @PatchMapping(path = "/{ID}")
-    public ResponseEntity<?> incrementPriority(@PathVariable Long ID) {
+    public ResponseEntity<?> patch(@PathVariable Long ID) {
         if(!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
             return ResponseEntity.notFound().build();
         }
 
         noteRepository.findById(ID)
-                        .ifPresent(note -> note.setPriority(note.getPriority() + 1));
+                        .ifPresent(note -> note.setDone(!note.isDone()));
 
         logger.warn("Patched note " + ID + ".");
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(path = "/{ID}")
