@@ -35,7 +35,7 @@ public class NoteGroupService {
     public void toggleGroup(final Long groupID) {
         NoteGroup result = noteGroupRepository.findByID(groupID)
                 .orElseThrow(() -> new IllegalArgumentException("NoteGroup with given ID not found."));
-        result.setTitle("<Closed> " + result.getTitle());
+        result.setDone(!result.isDone());
         noteGroupRepository.save(result);
     }
 

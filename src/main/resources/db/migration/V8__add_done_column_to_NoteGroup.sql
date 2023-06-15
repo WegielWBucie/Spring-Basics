@@ -1,0 +1,1 @@
+alter table NOTE_GROUPS add column done boolean default false;

@@ -51,6 +51,11 @@ class TestConfiguration {
             }
 
             @Override
+            public List<Note> findByDone(boolean done) {
+                return null;
+            }
+
+            @Override
             public List<Note> findByPriority(final Long priority) {
                 return null;
             }
@@ -78,6 +83,11 @@ class TestConfiguration {
             @Override
             public void deleteById(final Long ID) {
 
+            }
+
+            @Override
+            public List<Note> findAllByGroup_ID(Long ID) {
+                return null;
             }
         };
     }

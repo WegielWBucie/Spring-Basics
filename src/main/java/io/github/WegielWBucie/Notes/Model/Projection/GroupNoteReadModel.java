@@ -7,11 +7,13 @@ public class GroupNoteReadModel {
     private String title;
     private String content;
     private int priority;
+    private boolean done;
 
     public GroupNoteReadModel(Note source) {
         this.title = source.getTitle();
         this.content = source.getContent();
         this.priority = source.getPriority();
+        this.done = source.isDone();
     }
 
     public String getTitle() {
@@ -36,5 +38,13 @@ public class GroupNoteReadModel {
 
     public void setPriority(final int priority) {
         this.priority = priority;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

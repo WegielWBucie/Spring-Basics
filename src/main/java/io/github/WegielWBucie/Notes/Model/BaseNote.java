@@ -10,6 +10,7 @@ public abstract class BaseNote {
     protected String title;
     protected String content;
     protected int priority;
+    private boolean done;
 
     public Long getID() {
         return ID;
@@ -43,6 +44,14 @@ public abstract class BaseNote {
         this.priority = priority;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public void updateFrom(final Note source) {
         if(source.getTitle() != null)
             this.setTitle(source.getTitle());
@@ -50,5 +59,8 @@ public abstract class BaseNote {
             this.setContent(source.getContent());
         if(source.getPriority() != 0)
             this.setPriority(source.getPriority());
+        if(source.isDone() != this.isDone()) {
+            this.setDone(source.isDone());
+        }
     }
 }

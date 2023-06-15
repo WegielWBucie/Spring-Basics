@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class GroupReadModel {
     private String title;
     private String content;
-    private boolean done;
+    private int priority;
     /**
      * Expiration of the latest note in group.
      */
@@ -32,8 +32,9 @@ public class GroupReadModel {
                 .map(GroupNoteReadModel::new)
                 .collect(Collectors.toSet());
 
-        this.done = source.getNotes().stream()
-                .allMatch(Note::isDone);
+        this.priority = source.getNotes().stream()
+                .map(Note::getPriority)
+                .min(Integer::compareTo).orElseThrow(RuntimeException::new);
     }
 
     public String getTitle() {
@@ -68,11 +69,11 @@ public class GroupReadModel {
         this.notes = notes;
     }
 
-    public boolean isDone() {
-        return done;
+    public int getPriority() {
+        return priority;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

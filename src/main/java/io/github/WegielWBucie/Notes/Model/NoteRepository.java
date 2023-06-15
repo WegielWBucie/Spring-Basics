@@ -15,8 +15,9 @@ public interface NoteRepository {
 
     Optional<Note> findById(Long ID);
 
-
     List<Note> findByDone(boolean done);
+
+    List<Note> findByPriority(Long priority);
 
     boolean existsById(Long ID);
 
@@ -24,5 +25,5 @@ public interface NoteRepository {
 
     void deleteById(Long ID);
 
-
+    List<Note> findAllByGroup_ID(Long ID);
 }
