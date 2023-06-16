@@ -8,7 +8,7 @@
 		<version>2.7.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>io.github.WegielWBucie</groupId>
+	<groupId>io.github.janekkodowanie</groupId>
 	<artifactId>Notes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Notes</name>
@@ -26,6 +26,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
 		<dependency>
