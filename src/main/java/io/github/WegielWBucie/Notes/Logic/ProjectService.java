@@ -4,6 +4,7 @@ import io.github.WegielWBucie.Notes.Model.*;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupNoteWriteModel;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import io.github.WegielWBucie.Notes.Model.Projection.GroupWriteModel;
+import io.github.WegielWBucie.Notes.Model.Projection.ProjectWriteModel;
 import io.github.WegielWBucie.Notes.NoteConfigurationProperties;
 
 import java.time.LocalDateTime;
@@ -28,8 +29,8 @@ class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project save(Project source) {
-        return projectRepository.save(source);
+    public Project save(ProjectWriteModel toSave) {
+        return projectRepository.save(toSave.toProject());
     }
 
 
@@ -55,7 +56,7 @@ class ProjectService {
                             ).collect(Collectors.toSet())
                     );
 
-                    return noteGroupService.createGroup(targetGroup);
+                    return noteGroupService.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("No project with given ID found."));
     }
 }

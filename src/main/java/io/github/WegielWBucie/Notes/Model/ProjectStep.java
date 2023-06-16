@@ -12,6 +12,8 @@ public class ProjectStep {
     private String title;
     private String content;
 
+    private int daysToDeadline;
+
     @ManyToOne
     @JoinColumn(name = "PROJECT_ID")
     private Project project;
@@ -20,7 +22,7 @@ public class ProjectStep {
         return ID;
     }
 
-    void setID(final Long ID) {
+    public void setID(final Long ID) {
         this.ID = ID;
     }
 
@@ -28,7 +30,7 @@ public class ProjectStep {
         return title;
     }
 
-    void setTitle(final String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -36,7 +38,7 @@ public class ProjectStep {
         return content;
     }
 
-    void setContent(final String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
 
@@ -44,7 +46,15 @@ public class ProjectStep {
         return project;
     }
 
-    void setProject(final Project project) {
+    public void setProject(final Project project) {
         this.project = project;
+    }
+
+    public int getDaysToDeadline() {
+        return daysToDeadline;
+    }
+
+    public void setDaysToDeadline(int daysToDeadline) {
+        this.daysToDeadline = daysToDeadline;
     }
 }

@@ -21,6 +21,8 @@ public interface NoteRepository {
 
     boolean existsById(Long ID);
 
+    boolean existsByDoneIsFalseAndGroup_ID(Long ID);
+
     Note save(Note entity);
 
     void deleteById(Long ID);

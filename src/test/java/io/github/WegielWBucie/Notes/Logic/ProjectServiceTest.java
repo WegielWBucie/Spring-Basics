@@ -157,7 +157,7 @@ class ProjectServiceTest {
         }
 
         @Override
-        public Optional<NoteGroup> findByID(final Long ID) {
+        public Optional<NoteGroup> findById(final Long ID) {
             return Optional.ofNullable(map.get(ID));
         }
 

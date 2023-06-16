@@ -3,13 +3,14 @@ package io.github.WegielWBucie.Notes.Model.Projection;
 import io.github.WegielWBucie.Notes.Model.Note;
 
 public class GroupNoteReadModel {
-
+    private Long ID;
     private String title;
     private String content;
     private int priority;
     private boolean done;
 
     public GroupNoteReadModel(Note source) {
+        this.ID = source.getID();
         this.title = source.getTitle();
         this.content = source.getContent();
         this.priority = source.getPriority();
@@ -46,5 +47,13 @@ public class GroupNoteReadModel {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
     }
 }

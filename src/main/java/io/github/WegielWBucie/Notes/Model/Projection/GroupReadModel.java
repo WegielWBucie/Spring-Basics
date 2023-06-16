@@ -10,9 +10,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
+    private Long ID;
     private String title;
     private String content;
     private int priority;
+    private boolean done;
     /**
      * Expiration of the latest note in group.
      */
@@ -20,6 +22,7 @@ public class GroupReadModel {
     private Set<GroupNoteReadModel> notes;
 
     public GroupReadModel(NoteGroup source) {
+        this.ID = source.getID();
         this.title = source.getTitle();
         this.content = source.getContent();
         this.expiration = source.getNotes().stream()
@@ -27,6 +30,8 @@ public class GroupReadModel {
                 .filter(Predicate.not(Objects::isNull))
                 .max(LocalDateTime::compareTo)
                 .orElse(null);
+
+        this.done = source.isDone();
 
         notes = source.getNotes().stream()
                 .map(GroupNoteReadModel::new)
@@ -75,5 +80,21 @@ public class GroupReadModel {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

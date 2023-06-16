@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -103,5 +105,15 @@ class NoteController {
             logger.error(exception.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping(path = "/search/today")
+    ResponseEntity<List<Note>> findNotesForToday() {
+        return ResponseEntity.ok(noteRepository.findAll().stream()
+                .filter(note -> !note.isDone() && (note.getExpiration() == null || note.getExpiration().
+                        isBefore(LocalDateTime.now().plusDays(1)
+                                .withHour(0).withMinute(0).withSecond(0)))
+                )
+                .toList());
     }
 }

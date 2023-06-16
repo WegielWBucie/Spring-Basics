@@ -18,7 +18,7 @@ public class Project {
     protected String title;
     protected String content;
 
-    Project() {}
+    public Project() {}
 
     Set<NoteGroup> getGroups() {
         return groups;
@@ -27,12 +27,12 @@ public class Project {
     public Set<ProjectStep> getSteps() {
         /*
             Deep copy of steps should be returned,
-            TODO;
+            TODO: implement deep copy
          */
         return steps;
     }
 
-    void setSteps(final Set<ProjectStep> steps) {
+    public void setSteps(final Set<ProjectStep> steps) {
         this.steps = steps;
     }
 
@@ -52,7 +52,7 @@ public class Project {
         return title;
     }
 
-    void setTitle(final String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -60,7 +60,7 @@ public class Project {
         return content;
     }
 
-    void setContent(final String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
 

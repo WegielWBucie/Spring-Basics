@@ -1,18 +1,12 @@
 package io.github.WegielWBucie.Notes.Logic;
 
 import io.github.WegielWBucie.Notes.Model.*;
-import io.github.WegielWBucie.Notes.Model.Projection.GroupReadModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,7 +36,7 @@ class NoteGroupServiceTest {
         group.setTitle("GroupTitle");
         /* and */
         var mockGroupRepository = mock(NoteGroupRepository.class);
-        when(mockGroupRepository.findByID(anyLong())).thenReturn(Optional.of(group));
+        when(mockGroupRepository.findById(anyLong())).thenReturn(Optional.of(group));
         /* and */
         var noteRepository = mock(NoteRepository.class);
         /* and */

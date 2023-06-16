@@ -1,6 +1,7 @@
 package io.github.WegielWBucie.Notes.Model.Projection;
 
 import io.github.WegielWBucie.Notes.Model.NoteGroup;
+import io.github.WegielWBucie.Notes.Model.Project;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class GroupWriteModel {
         this.notes = notes;
     }
 
-    public NoteGroup toGroup() {
+    public NoteGroup toGroup(Project project) {
         NoteGroup result = new NoteGroup();
         result.setTitle(this.title);
         result.setContent(this.content);
@@ -44,6 +45,7 @@ public class GroupWriteModel {
                         .map(source -> source.toNote(result))
                         .collect(Collectors.toSet())
         );
+        result.setProject(project);
         return result;
     }
 

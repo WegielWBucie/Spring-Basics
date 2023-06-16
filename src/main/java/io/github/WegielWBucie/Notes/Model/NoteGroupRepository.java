@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface NoteGroupRepository {
     List<NoteGroup> findAll();
-    Optional<NoteGroup> findByID(Long ID);
+    Optional<NoteGroup> findById(Long ID);
 
     NoteGroup save(NoteGroup entity);
 

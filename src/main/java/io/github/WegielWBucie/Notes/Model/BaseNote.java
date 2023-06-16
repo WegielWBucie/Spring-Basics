@@ -10,7 +10,7 @@ public abstract class BaseNote {
     protected String title;
     protected String content;
     protected int priority;
-    private boolean done;
+    protected boolean done;
 
     public Long getID() {
         return ID;
