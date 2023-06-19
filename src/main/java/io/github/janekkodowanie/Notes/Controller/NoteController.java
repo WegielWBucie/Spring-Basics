@@ -40,7 +40,7 @@ class NoteController {
     }
 
      @GetMapping(path = "/{ID}")
-     ResponseEntity<Optional<Note>> findALlNotes(@PathVariable @Valid final Long ID) {
+     ResponseEntity<Optional<Note>> findByID(@PathVariable @Valid final Long ID) {
         return ResponseEntity.ok(noteRepository.findById(ID));
     }
 
