@@ -3,19 +3,17 @@ package io.github.janekkodowanie.Notes.Model.Projection;
 import io.github.janekkodowanie.Notes.Model.Project;
 import io.github.janekkodowanie.Notes.Model.ProjectStep;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class ProjectWriteModel {
     private String title;
     private String content;
-    private List<ProjectStep> steps;
+    private List<ProjectStep> steps = new ArrayList<>();
 
-    public ProjectWriteModel() {}
-
-    public ProjectWriteModel(final String title, final String content) {
-        this.title = title;
-        this.content = content;
+    public ProjectWriteModel() {
+        this.steps.add(new ProjectStep());
     }
 
     public String getTitle() {
@@ -31,6 +29,14 @@ public class ProjectWriteModel {
 
     public void setSteps(List<ProjectStep> steps) {
         this.steps = steps;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Project toProject() {

@@ -1,16 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes: projects</title>
     <link rel="stylesheet" href="https://igoradamenko.com/awsm.css/v2/css/awsm.css">
+    <style>
+        .Bd {
+            border: 1px solid black;
+        }
+
+        .C\(red\) {
+            color: red;
+        }
+
+        .Bdc\(red\) {
+            border-color: red !important;
+        }
+
+        .P\(0\) {
+            padding: 0;
+        }
+        .P\(10px\) {
+            padding: 10px;
+        }
+    </style>
+
 </head>
 <body>
 <main>
-    <fieldset>
-        <legend>New project</legend>
-    </fieldset>
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+
+    <!--/*@thymesVar id="projects" type="java.util.List<io.github.janekkodowanie.Notes.Model.Project>"*/-->
+    <dl th:each="project : ${projects}" class="Bd P(10px)">
+        <dt th:text="${project.title}"></dt>
+        <dt th:text="${project.content}"></dt>
+        <dd>
+            <ul>
+                <li th:each="step : ${project.steps}">
+                    <span th:text="${step.title}"></span><br>
+                    <span th:text="${step.content}"></span><br>
+                    <span th:text="|(${step.daysToDeadline} days)|"></span>
+                </li>
+            </ul>
+            <form action="#" method="post" th:action="@{/projects/{projectId}(projectId=${project.ID})}">
+                <label>Deadline
+                    <input name="deadline" type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+                </label>
+                <label>Priority
+                    <input name="priority" type="number">
+                </label>
+                <button type="submit">Create notes >></button>
+            </form>
+        </dd>
+    </dl>
+
+    <!--/*@thymesVar id="project" type="io.github.janekkodowanie.Notes.Model.Projection.ProjectWriteModel"*/-->
+    <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
+        <p th:if="${#fields.hasAnyErrors()}" th:errors="*{'all'}">Incorrect value</p>
+        <fieldset>
+            <legend>New project</legend>
+            <label>Title
+                <input type="text" th:field="*{title}" th:errorclass="'Bdc(red)'"/>
+            </label>
+            <label>Content
+                <input type="text" th:field="*{content}" th:errorclass="'Bdc(red)'"/>
+            </label>
+
+            <fieldset th:each="step, stepStat : *{steps}">
+                <legend th:text="|Step ${stepStat.index + 1}|"></legend>
+                <label>Title
+                    <input type="text" th:field="*{steps[__${stepStat.index}__].title}" th:errorclass="'Bdc(red)'"/>
+                </label>
+                <label>Content
+                    <input type="text" th:field="*{steps[__${stepStat.index}__].content}" th:errorclass="'Bdc(red)'"/>
+                </label>
+                <label>DaysTillDeadline
+                    <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadline}" th:errorclass="'Bdc(red)'"/>
+                </label>
+            </fieldset>
+            <div>
+                <button type="submit" name="addStep">+</button>
+            </div>
+        </fieldset>
+        <p>
+            <button type="submit">Add</button>
+            <button type="reset">Clear</button>
+        </p>
+
+    </form>
+
+
 </main>
 </body>
 </html>

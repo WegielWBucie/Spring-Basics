@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class ProjectService {
+public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final NoteGroupRepository noteGroupRepository;

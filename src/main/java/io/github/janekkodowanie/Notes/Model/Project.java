@@ -14,9 +14,9 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long ID;
-    protected String title;
-    protected String content;
+    private Long ID;
+    private String title;
+    private String content;
 
     public Project() {}
 
@@ -44,7 +44,7 @@ public class Project {
         return ID;
     }
 
-    void setID(final Long ID) {
+    public void setID(final Long ID) {
         this.ID = ID;
     }
 
