@@ -8,14 +8,16 @@ import io.github.janekkodowanie.Notes.Model.Projection.GroupReadModel;
 import io.github.janekkodowanie.Notes.Model.Projection.GroupWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping(value = "/groups")
 public class NoteGroupController {
 
@@ -32,26 +34,30 @@ public class NoteGroupController {
         this.noteRepository = noteRepository;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     ResponseEntity<List<GroupReadModel>> findAllGroups() {
         logger.info("Exposing all groups.");
         return ResponseEntity.ok(noteGroupService.readAll());
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     ResponseEntity<GroupReadModel> postGroup(@RequestBody @Valid GroupWriteModel toPost) {
         logger.info("Creating new group.");
         GroupReadModel result = noteGroupService.createGroup(toPost);
         return ResponseEntity.created(URI.create("/" + result.getID())).body(result);
     }
 
-    @GetMapping("/{ID}/notes")
+    @GetMapping(path = "/{ID}/notes", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     ResponseEntity<List<Note>> findNotesFromGroup(@PathVariable Long ID) {
         logger.info("Exposing all notes from group with ID = " + ID + ".");
         return ResponseEntity.ok(noteRepository.findAllByGroup_ID(ID));
     }
 
-    @PatchMapping("/{ID}")
+    @PatchMapping(value = "/{ID}")
+    @ResponseBody
     ResponseEntity<?> toggleGroup(@PathVariable Long ID) {
         logger.info("Toggling group with ID = " + ID + ".");
         noteGroupService.toggleGroup(ID);
@@ -59,13 +65,20 @@ public class NoteGroupController {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
     ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(IllegalStateException.class)
+    @ResponseBody
     ResponseEntity<?> handleIllegalState(IllegalStateException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ModelAttribute("groups")
+    List<GroupReadModel> getGroups() {
+        return noteGroupService.readAll();
     }
 
 }
