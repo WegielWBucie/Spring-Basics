@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Table(name = "NOTES")
 public class Note extends BaseNote {
 
-    private LocalDateTime expiration;
+    private LocalDateTime deadline;
 
 
     @ManyToOne
@@ -24,29 +24,29 @@ public class Note extends BaseNote {
 
     public Note() {}
 
-    public Note(String title, String content, int priority, LocalDateTime expiration) {
-        this(title, content, priority, expiration, null);
+    public Note(String title, String content, int priority, LocalDateTime deadline) {
+        this(title, content, priority, deadline, null);
     }
 
-    public Note(String title, String content, int priority, LocalDateTime expiration, NoteGroup group) {
-        this(title, content, priority, expiration, group, false);
+    public Note(String title, String content, int priority, LocalDateTime deadline, NoteGroup group) {
+        this(title, content, priority, deadline, group, false);
     }
 
-    public Note(String title, String content, int priority, LocalDateTime expiration, NoteGroup group, boolean done) {
+    public Note(String title, String content, int priority, LocalDateTime deadline, NoteGroup group, boolean done) {
         this.title = title;
         this.content = content;
         this.priority = priority;
-        this.expiration = expiration;
+        this.deadline = deadline;
         if(group != null) {
             this.group = group;
         }
     }
 
-    public LocalDateTime getExpiration() {
-        return expiration;
+    public LocalDateTime getDeadline() {
+        return deadline;
     }
-    public void setExpiration(final LocalDateTime expiration) {
-        this.expiration = expiration;
+    public void setDeadline(final LocalDateTime expiration) {
+        this.deadline = expiration;
     }
 
     NoteGroup getGroup() {
@@ -60,8 +60,8 @@ public class Note extends BaseNote {
     @Override
     public void updateFrom(final Note source) {
         super.updateFrom(source);
-        if(source.getExpiration() != null)
-            this.setExpiration(source.getExpiration());
+        if(source.getDeadline() != null)
+            this.setDeadline(source.getDeadline());
         if(source.getGroup() != null)
             this.setGroup(source.getGroup());
     }

@@ -2,19 +2,23 @@ package io.github.janekkodowanie.Notes.Model.Projection;
 
 import io.github.janekkodowanie.Notes.Model.Note;
 
-public class GroupNoteReadModel {
+import java.time.LocalDateTime;
+
+public class NoteReadModel {
     private Long ID;
     private String title;
     private String content;
     private int priority;
     private boolean done;
+    private LocalDateTime deadline;
 
-    public GroupNoteReadModel(Note source) {
+    public NoteReadModel(Note source) {
         this.ID = source.getID();
         this.title = source.getTitle();
         this.content = source.getContent();
         this.priority = source.getPriority();
         this.done = source.isDone();
+        this.deadline = source.getDeadline();
     }
 
     public String getTitle() {
@@ -55,5 +59,13 @@ public class GroupNoteReadModel {
 
     public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 }

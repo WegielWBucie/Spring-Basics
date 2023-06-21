@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes: groups</title>
+    <link rel="stylesheet" href="https://igoradamenko.com/awsm.css/v2/css/awsm.css">
+    <style>
+        .Bd {
+            border: 1px solid black;
+        }
+
+        .C\(red\) {
+            color: red;
+        }
+
+        .Bdc\(red\) {
+            border-color: red !important;
+        }
+
+        .P\(0\) {
+            padding: 0;
+        }
+
+        .M\(0\) {
+            margin: 0;
+        }
+
+        .P\(10px\) {
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<main>
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+
+    <!--/*@thymesVar id="groups" type="java.util.List<io.github.janekkodowanie.Notes.Model.Projection.GroupReadModel>"*/-->
+    <dl th:each="group : ${groups}" class="Bd P(10px)">
+        <dt th:text="${group.title}">
+            <label>
+                <input type="checkbox"/>
+                <span th:text="${group.title}"></span>
+                <small th:text="|(${group.deadline})|"></small>
+            </label>
+            <hr class="M(0)">
+        </dt>
+        <dt th:text="${group.content}"></dt>
+        <dd>
+            <a th:href="@{/notes.html(group=${group.ID})}">
+                <ul class="P(0)">
+                    <li th:each="note : ${group.notes}">
+                        <span th:unless="${note.done}" th:text="${note.title}"></span>
+                        <del th:if="${note.done}" th:text="${note.title}"></del><br>
+                        <span th:unless="${note.done}" th:text="${note.content}"></span>
+                        <del th:if="${note.done}" th:text="${note.content}"></del><br>
+                        <span th:unless="${note.done}" th:text="${note.priority}"></span>
+                        <del th:if="${note.done}" th:text="${note.priority}"></del><br>
+                        <span th:unless="${note.done}" th:text="${note.deadline}"></span>
+                        <del th:if="${note.done}" th:text="${note.deadline}"></del>
+                    </li>
+                </ul>
+            </a>
+        </dd>
+    </dl>
+
+    <!--/*@thymesVar id="group" type="io.github.janekkodowanie.Notes.Model.Projection.GroupWriteModel"*/-->
+    <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
+        <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}">Incorrect value</p>
+        <fieldset>
+            <legend>New Group</legend>
+            <label>Title
+                <input name="title" type="text" th:field="*{title}" th:errorclass="'Bdc(red)'"/>
+            </label>
+            <label>Content
+                <input name="content" type="text" th:field="*{content}" th:errorclass="'Bdc(red)'"/>
+            </label>
+
+            <fieldset th:each="note, noteStat : *{notes}">
+                <legend th:text="|Note ${noteStat.index + 1}|"></legend>
+                <label>Title
+                    <input type="text" th:field="*{notes[__${noteStat.index}__].title}" th:errorclass="'Bdc(red)'"/>
+                </label>
+                <label>Content
+                    <input type="text" th:field="*{notes[__${noteStat.index}__].content}" th:errorclass="'Bdc(red)'"/>
+                </label>
+                <label>Deadline
+                    <input type="datetime-local" th:field="*{notes[__${noteStat.index}__].deadline}"
+                           pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" th:errorclass="'Bdc(red)'"/>
+                </label>
+            </fieldset>
+            <div>
+                <button type="submit" name="addNote">+</button>
+            </div>
+        </fieldset>
+        <p>
+            <button type="submit">Add</button>
+            <button type="reset">Clear</button>
+        </p>
+
+    </form>
+</main>
+</body>
+</html>

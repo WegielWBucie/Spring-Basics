@@ -3,14 +3,24 @@ package io.github.janekkodowanie.Notes.Model.Projection;
 import io.github.janekkodowanie.Notes.Model.NoteGroup;
 import io.github.janekkodowanie.Notes.Model.Project;
 
-import java.util.Set;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GroupWriteModel {
+    @NotBlank(message = "Group's title must not be empty")
     private String title;
+    @NotBlank(message = "Group's content must not be empty")
     private String content;
 
-    private Set<GroupNoteWriteModel> notes;
+    @Valid
+    private List<NoteWriteModel> notes = new ArrayList<>();
+
+    public GroupWriteModel() {
+        this.notes.add(new NoteWriteModel());
+    }
 
     public String getTitle() {
         return title;
@@ -28,11 +38,11 @@ public class GroupWriteModel {
         this.content = content;
     }
 
-    public Set<GroupNoteWriteModel> getNotes() {
+    public List<NoteWriteModel> getNotes() {
         return notes;
     }
 
-    public void setNotes(final Set<GroupNoteWriteModel> notes) {
+    public void setNotes(final List<NoteWriteModel> notes) {
         this.notes = notes;
     }
 

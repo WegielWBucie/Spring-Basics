@@ -100,7 +100,7 @@ class ProjectServiceTest {
         assertThat(result.getTitle()).isEqualTo("ProjectTitle");
         assertThat(result.getContent()).isEqualTo("ProjectContent");
         assertThat(result.getNotes().stream().allMatch(note -> note.getTitle().equals("Title.")));
-        assertThat(result.getExpiration().equals(expiration));
+        assertThat(result.getDeadline().equals(expiration));
         assertThat(countBeforeCall + 1).isEqualTo(inMemoryGroupRepo.count());
     }
 

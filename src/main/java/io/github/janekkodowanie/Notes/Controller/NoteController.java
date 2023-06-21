@@ -109,7 +109,7 @@ class NoteController {
     @GetMapping(path = "/search/today")
     ResponseEntity<List<Note>> findNotesForToday() {
         return ResponseEntity.ok(noteRepository.findAll().stream()
-                .filter(note -> !note.isDone() && (note.getExpiration() == null || note.getExpiration().
+                .filter(note -> !note.isDone() && (note.getDeadline() == null || note.getDeadline().
                         isBefore(LocalDateTime.now().plusDays(1)
                                 .withHour(0).withMinute(0).withSecond(0)))
                 )

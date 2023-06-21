@@ -20,7 +20,7 @@
                 <input type="number" name="priority" />
             </label>
             <label>Expiration date
-                <input type="datetime-local" name="expiration" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" />
+                <input type="datetime-local" name="deadline" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" />
             </label>
             <button type="submit">Add!</button>
         </form>
@@ -50,20 +50,20 @@
                     title: form.elements.title.value,
                     content: form.elements.content.value,
                     priority: form.elements.priority.value,
-                    expiration: form.elements.expiration.value && form.elements.expiration.value + ':00.000'
+                    deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
                 })
             });
-            console.log('Deadline:', form.elements.expiration.value);
+            // console.log('Deadline:', form.elements.deadline.value);
             if (resp.ok) {
                 const noteFromServer = await resp.json();
-                console.log('Deadline:', noteFromServer.expiration);
+                // console.log('Deadline:', noteFromServer.deadline);
                 document.querySelector('ul').appendChild(createNote(noteFromServer));
                 form.reset();
             }
         });
 
-        function createNote({ id, title, content, priority, expiration, done }) {
-            console.log('Deadline:', expiration);
+        function createNote({ id, title, content, priority, deadline, done }) {
+            // console.log('Deadline:', deadline);
             const result = document.createElement('li');
             result.innerHTML = `
                 <label>
@@ -71,7 +71,7 @@
                     ${title}<br>
                     ${content}<br>
                     ${priority}<br>
-                    <small>${expiration ? expiration.replace('T', ' ') : 'None'}</small>
+                    <small>${deadline ? deadline.replace('T', ' ') : 'None'}</small>
                 </label>
             `;
             result.querySelector('input').addEventListener('click', async (e) => {

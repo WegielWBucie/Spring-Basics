@@ -57,7 +57,7 @@
 
     <!--/*@thymesVar id="project" type="io.github.janekkodowanie.Notes.Model.Projection.ProjectWriteModel"*/-->
     <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
-        <p th:if="${#fields.hasAnyErrors()}" th:errors="*{'all'}">Incorrect value</p>
+        <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}">Incorrect value</p>
         <fieldset>
             <legend>New project</legend>
             <label>Title

@@ -16,17 +16,17 @@ public class GroupReadModel {
     private int priority;
     private boolean done;
     /**
-     * Expiration of the latest note in group.
+     * Deadline of the latest note in group.
      */
-    private LocalDateTime expiration;
-    private Set<GroupNoteReadModel> notes;
+    private LocalDateTime deadline;
+    private Set<NoteReadModel> notes;
 
     public GroupReadModel(NoteGroup source) {
         this.ID = source.getID();
         this.title = source.getTitle();
         this.content = source.getContent();
-        this.expiration = source.getNotes().stream()
-                .map(Note::getExpiration)
+        this.deadline = source.getNotes().stream()
+                .map(Note::getDeadline)
                 .filter(Predicate.not(Objects::isNull))
                 .max(LocalDateTime::compareTo)
                 .orElse(null);
@@ -34,7 +34,7 @@ public class GroupReadModel {
         this.done = source.isDone();
 
         notes = source.getNotes().stream()
-                .map(GroupNoteReadModel::new)
+                .map(NoteReadModel::new)
                 .collect(Collectors.toSet());
 
         this.priority = source.getNotes().stream()
@@ -58,19 +58,19 @@ public class GroupReadModel {
         this.content = content;
     }
 
-    public void setExpiration(final LocalDateTime expiration) {
-        this.expiration = expiration;
+    public void setDeadline(final LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
-    public LocalDateTime getExpiration() {
-        return expiration;
+    public LocalDateTime getDeadline() {
+        return deadline;
     }
 
-    public Set<GroupNoteReadModel> getNotes() {
+    public Set<NoteReadModel> getNotes() {
         return notes;
     }
 
-    public void setNotes(final Set<GroupNoteReadModel> notes) {
+    public void setNotes(final Set<NoteReadModel> notes) {
         this.notes = notes;
     }
 

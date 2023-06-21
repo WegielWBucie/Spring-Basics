@@ -1,6 +1,6 @@
 package io.github.janekkodowanie.Notes.Logic;
 
-import io.github.janekkodowanie.Notes.Model.Projection.GroupNoteWriteModel;
+import io.github.janekkodowanie.Notes.Model.Projection.NoteWriteModel;
 import io.github.janekkodowanie.Notes.Model.Projection.GroupReadModel;
 import io.github.janekkodowanie.Notes.Model.Projection.GroupWriteModel;
 import io.github.janekkodowanie.Notes.Model.Projection.ProjectWriteModel;
@@ -48,14 +48,14 @@ public class ProjectService {
                     targetGroup.setContent(project.getContent());
                     targetGroup.setNotes(project.getSteps().stream()
                             .map(projectStep -> {
-                                        var note = new GroupNoteWriteModel();
+                                        var note = new NoteWriteModel();
                                         note.setTitle(projectStep.getTitle());
                                         note.setContent(projectStep.getContent());
                                         note.setPriority(priority);
-                                        note.setExpiration(expiration);
+                                        note.setDeadline(expiration);
                                         return note;
                                     }
-                            ).collect(Collectors.toSet())
+                            ).collect(Collectors.toList())
                     );
 
                     return noteGroupService.createGroup(targetGroup, project);
