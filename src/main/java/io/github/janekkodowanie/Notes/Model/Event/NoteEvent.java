@@ -1,19 +1,26 @@
 package io.github.janekkodowanie.Notes.Model.Event;
 
+import com.sun.source.util.TaskEvent;
+import io.github.janekkodowanie.Notes.Model.Note;
+
 import java.time.Clock;
 import java.time.Instant;
 
 public abstract class NoteEvent {
 
-    private final int noteId;
+    public static NoteEvent changed(Note source) {
+        return source.isDone() ? new NoteDone(source) : new NoteUndone(source);
+    }
+
+    private final Long noteId;
     private final Instant occurrence;
 
-    NoteEvent(int noteId, Clock clock) {
+    NoteEvent(Long noteId, Clock clock) {
         this.noteId = noteId;
         this.occurrence = Instant.now();
     }
 
-    public int getNoteId() {
+    public Long getNoteId() {
         return noteId;
     }
 
