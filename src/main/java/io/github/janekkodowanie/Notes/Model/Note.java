@@ -1,5 +1,8 @@
 package io.github.janekkodowanie.Notes.Model;
 
+import com.sun.source.util.TaskEvent;
+import io.github.janekkodowanie.Notes.Model.Event.NoteEvent;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -65,4 +68,11 @@ public class Note extends BaseNote {
         if(source.getGroup() != null)
             this.setGroup(source.getGroup());
     }
+
+    public NoteEvent toggle() {
+        this.done = !this.done;
+        return NoteEvent.changed(this);
+    }
+
+
 }

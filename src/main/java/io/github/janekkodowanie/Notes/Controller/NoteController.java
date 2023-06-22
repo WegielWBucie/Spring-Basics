@@ -6,6 +6,7 @@ import io.github.janekkodowanie.Notes.Model.NoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,13 @@ class NoteController {
     private final NoteService noteService;
 
     private static final Logger logger = LoggerFactory.getLogger(NoteController.class);
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    NoteController(final NoteRepository noteRepository, final NoteService noteService) {
+    NoteController(final NoteRepository noteRepository, final NoteService noteService, ApplicationEventPublisher eventPublisher) {
         this.noteRepository = noteRepository;
         this.noteService = noteService;
+        this.eventPublisher = eventPublisher;
     }
 
     @GetMapping(params = {"!sort", "!page", "!size"})
@@ -75,14 +78,15 @@ class NoteController {
 
     @Transactional
     @PatchMapping(path = "/{ID}")
-    public ResponseEntity<?> patch(@PathVariable Long ID) {
+    public ResponseEntity<?> toggleNote(@PathVariable Long ID) {
         if(!noteRepository.existsById(ID)) {
             logger.error("No note with selected ID exists. ( ID = " + ID + " )");
             return ResponseEntity.notFound().build();
         }
 
         noteRepository.findById(ID)
-                        .ifPresent(note -> note.setDone(!note.isDone()));
+                .map(Note::toggle)
+                .ifPresent(eventPublisher::publishEvent);
 
         logger.warn("Patched note " + ID + ".");
         return ResponseEntity.ok().build();
