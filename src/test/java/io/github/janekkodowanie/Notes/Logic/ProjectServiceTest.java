@@ -178,6 +178,12 @@ class ProjectServiceTest {
         }
 
         @Override
+        public boolean existsByTitle(String title) {
+            return map.values().stream()
+                    .anyMatch(noteGroup -> noteGroup.getTitle().equals(title));
+        }
+
+        @Override
         public boolean existsByProjectID(final Long projectID) {
             return map.values().stream()
                     .anyMatch(noteGroup -> noteGroup.getProject() != null && noteGroup.getProject().getID() == projectID);

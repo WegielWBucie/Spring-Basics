@@ -9,5 +9,7 @@ public interface NoteGroupRepository {
 
     NoteGroup save(NoteGroup entity);
 
+    boolean existsByTitle(String title);
+
     boolean existsByProjectID(Long projectID);
 }

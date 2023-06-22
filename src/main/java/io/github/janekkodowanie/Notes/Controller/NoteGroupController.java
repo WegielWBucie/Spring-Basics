@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
+@IllegalExceptionsProcessing
 @RequestMapping("/groups")
 public class NoteGroupController {
 
@@ -103,25 +104,11 @@ public class NoteGroupController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseBody
-    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    @ResponseBody
-    ResponseEntity<?> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
     /*##################################################################*/
     /*##################################################################*/
 
     @ModelAttribute("groups")
     List<GroupReadModel> getGroups() {
-//        List<GroupReadModel> notes = noteGroupService.readAll();
-//        logger.info(String.valueOf(notes.size()));
         return noteGroupService.readAll();
     }
 }

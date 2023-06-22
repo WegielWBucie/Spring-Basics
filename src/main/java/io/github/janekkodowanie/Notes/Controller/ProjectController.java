@@ -4,6 +4,7 @@ import io.github.janekkodowanie.Notes.Logic.ProjectService;
 import io.github.janekkodowanie.Notes.Model.Project;
 import io.github.janekkodowanie.Notes.Model.ProjectStep;
 import io.github.janekkodowanie.Notes.Model.Projection.ProjectWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,13 +47,13 @@ public class ProjectController {
         return "projects";
     }
 
-
     @PostMapping(params = "addStep")
     String addProjectStep(@ModelAttribute("project") ProjectWriteModel currentProject) {
         currentProject.getSteps().add(new ProjectStep());
         return "projects";
     }
 
+    @Timed(value = "project.create.group", histogram = true, percentiles = {0.5, 0.95, 0.99})
     @PostMapping("/{ID}")
     String createGroup(
             @ModelAttribute("project") ProjectWriteModel currentProject,
