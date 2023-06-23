@@ -6,6 +6,7 @@ import io.github.janekkodowanie.Notes.Model.Event.NoteUndone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,11 +20,13 @@ class ChangedNoteEventListener {
         this.repository = repository;
     }
 
+    @Async
     @EventListener
     public void on(NoteDone event) {
         onChanged(event);
     }
 
+    @Async
     @EventListener
     public void on(NoteUndone event) {
         onChanged(event);
