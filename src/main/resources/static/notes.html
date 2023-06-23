@@ -30,7 +30,7 @@
     (async function() {
         const main = document.querySelector('main');
         const params = new URLSearchParams(location.search);
-        const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/notes');
+        const response = params.has('group') ? await fetch(`/groups/${params.get('group')}/notes`) : await fetch('/notes');
         if (response.ok) {
             const notes = await response.json();
             const list = document.createElement('ul');
